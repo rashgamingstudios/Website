@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rash Game Studios — Building Games. Accelerating Innovation.</title>
+<meta name="description" content="Rash Game Studios is an independent game development studio building mobile games, multiplayer experiences, and AI-assisted game development solutions." />
+
+<!-- Social preview -->
+<meta property="og:title" content="Rash Game Studios" />
+<meta property="og:description" content="Mobile games, multiplayer experiences, and AI-assisted game development." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://rashgamesstudios.com" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   RASH GAME STUDIOS — theme tokens
+   ============================================================ */
+:root{
+  --bg:#070A14;            /* near-black midnight */
+  --bg-2:#0B1022;          /* midnight blue panel */
+  --surface:#0F1730;       /* card */
+  --surface-2:#131D3C;     /* raised card / hover */
+  --line:rgba(255,255,255,.09);
+  --line-strong:rgba(255,255,255,.16);
+
+  --white:#EEF2FF;
+  --ink:#F6F8FF;
+  --muted:#929CBD;         /* cool grey-blue */
+  --muted-2:#7A85A8;
+  --muted-soft:#5E688A;
+
+  --electric:#2D7DFF;      /* electric blue */
+  --electric-2:#5AA0FF;
+  --electric-glow:rgba(45,125,255,.45);
+
+  --gold:#EBC178;          /* premium gold */
+  --gold-deep:#C9962F;
+
+  --max:1180px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --radius:18px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16.5px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ambient background layer */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(620px 480px at 78% -6%, rgba(45,125,255,.20), transparent 60%),
+    radial-gradient(520px 420px at 8% 12%, rgba(45,125,255,.12), transparent 60%),
+    radial-gradient(700px 500px at 50% 108%, rgba(235,193,120,.06), transparent 60%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 25%, #000 30%, transparent 75%);
+          mask-image:radial-gradient(ellipse 70% 55% at 50% 25%, #000 30%, transparent 75%);
+}
+
+::selection{background:rgba(45,125,255,.35);}
+
+h1,h2,h3,h4{font-family:"Space Grotesk",sans-serif;font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0;}
+a{color:inherit;text-decoration:none;}
+p{margin:0 0 1.1em;color:var(--muted);}
+img{max-width:100%;display:block;}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 26px;}
+
+/* ---------- shared bits ---------- */
+.eyebrow{
+  font-family:"JetBrains Mono",monospace;font-size:.74rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:.7em;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--gold);opacity:.7;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.55em;cursor:pointer;border:0;
+  font-family:"Space Grotesk",sans-serif;font-size:.95rem;font-weight:500;
+  padding:13px 26px;border-radius:999px;transition:all .25s var(--ease);
+  white-space:nowrap;
+}
+.btn .arrow{transition:transform .25s var(--ease);}
+.btn:hover .arrow{transform:translateX(4px);}
+.btn.primary{background:var(--electric);color:#fff;box-shadow:0 8px 30px -8px var(--electric-glow);}
+.btn.primary:hover{background:var(--electric-2);box-shadow:0 12px 40px -8px var(--electric-glow);transform:translateY(-2px);}
+.btn.ghost{background:transparent;color:var(--white);border:1px solid var(--line-strong);}
+.btn.ghost:hover{border-color:var(--electric);color:#fff;background:rgba(45,125,255,.08);}
+.btn.gold{background:linear-gradient(120deg,var(--gold),#f3d49a);color:#1a1407;}
+.btn.gold:hover{transform:translateY(-2px);box-shadow:0 12px 36px -10px rgba(235,193,120,.5);}
+
+.section{padding:96px 0;position:relative;}
+.section-sm{padding:72px 0;}
+.sec-head{max-width:62ch;margin-bottom:54px;}
+.sec-head h2{font-size:clamp(2rem,4.4vw,3rem);margin:.45em 0 .4em;}
+.sec-head p{font-size:1.08rem;}
+.grad-text{background:linear-gradient(100deg,var(--white) 30%,var(--electric-2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.gold-text{color:var(--gold);}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+header.nav{position:sticky;top:0;z-index:80;transition:background .3s var(--ease),border-color .3s var(--ease);
+  border-bottom:1px solid transparent;background:rgba(7,10,20,0);}
+header.nav.scrolled{background:rgba(7,10,20,.82);backdrop-filter:blur(14px);border-bottom-color:var(--line);}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:16px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+
+/* animated logo */
+.logo{display:flex;align-items:center;gap:12px;font-family:"Space Grotesk",sans-serif;font-weight:700;letter-spacing:.02em;}
+.logo svg{width:34px;height:34px;flex:none;}
+.logo .mark-stroke{stroke-dasharray:160;stroke-dashoffset:160;animation:draw 1.6s var(--ease) forwards .2s;}
+@keyframes draw{to{stroke-dashoffset:0;}}
+.logo .mark-core{transform-origin:center;animation:pulseCore 3.6s ease-in-out infinite;}
+@keyframes pulseCore{0%,100%{opacity:.85;}50%{opacity:.35;}}
+.logo .name{font-size:1.02rem;}
+.logo .name b{color:var(--white);font-weight:700;}
+.logo .name span{color:var(--muted);font-weight:500;}
+
+.menu{display:flex;align-items:center;gap:6px;}
+.menu a{font-size:.92rem;color:var(--muted);padding:9px 14px;border-radius:9px;transition:color .2s,background .2s;}
+.menu a:hover{color:var(--white);}
+.menu a.active{color:var(--white);background:rgba(255,255,255,.05);}
+.nav-cta{margin-left:8px;}
+
+.burger{display:none;background:none;border:1px solid var(--line-strong);border-radius:10px;width:42px;height:42px;cursor:pointer;padding:0;align-items:center;justify-content:center;}
+.burger span{display:block;width:18px;height:2px;background:var(--white);position:relative;transition:.25s var(--ease);}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:18px;height:2px;background:var(--white);transition:.25s var(--ease);}
+.burger span::before{top:-6px;}.burger span::after{top:6px;}
+body.menu-open .burger span{background:transparent;}
+body.menu-open .burger span::before{top:0;transform:rotate(45deg);}
+body.menu-open .burger span::after{top:0;transform:rotate(-45deg);}
+
+/* ============================================================
+   PAGES / ROUTING
+   ============================================================ */
+.page{display:none;}
+.page.active{display:block;animation:pageIn .55s var(--ease);}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{padding:96px 0 86px;position:relative;text-align:center;}
+.hero .badge{display:inline-flex;align-items:center;gap:.6em;font-family:"JetBrains Mono",monospace;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);
+  padding:7px 15px;border-radius:999px;background:rgba(255,255,255,.02);margin-bottom:30px;}
+.hero .badge .live{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(235,193,120,.6);animation:live 2.4s ease-out infinite;}
+@keyframes live{0%{box-shadow:0 0 0 0 rgba(235,193,120,.55);}70%{box-shadow:0 0 0 9px rgba(235,193,120,0);}100%{box-shadow:0 0 0 0 rgba(235,193,120,0);}}
+
+.hero-logo{width:120px;height:120px;margin:0 auto 26px;}
+.hero-logo .mark-stroke{stroke-dasharray:200;stroke-dashoffset:200;animation:draw 1.8s var(--ease) forwards .15s;}
+.hero-logo .mark-core{animation:pulseCore 3.6s ease-in-out infinite;transform-origin:center;}
+
+.hero h1{font-size:clamp(2.6rem,7vw,5.1rem);line-height:1.02;max-width:16ch;margin:0 auto .3em;}
+.hero h1 .grad-text{display:inline-block;}
+.hero .sub{font-size:clamp(1.05rem,2.2vw,1.32rem);color:var(--muted);max-width:50ch;margin:0 auto;}
+.hero .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px;}
+
+.hero-anim > *{opacity:0;animation:rise .8s var(--ease) forwards;}
+.hero-anim .badge{animation-delay:.05s;}
+.hero-anim .hero-logo{animation-delay:.12s;}
+.hero-anim h1{animation-delay:.22s;}
+.hero-anim .sub{animation-delay:.34s;}
+.hero-anim .cta-row{animation-delay:.46s;}
+@keyframes rise{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+
+/* ============================================================
+   FEATURED GAME SHOWCASE
+   ============================================================ */
+.showcase{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;
+  background:linear-gradient(145deg,var(--surface),var(--bg-2));border:1px solid var(--line);
+  border-radius:26px;padding:46px;position:relative;overflow:hidden;}
+.showcase::before{content:"";position:absolute;top:-40%;right:-10%;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(closest-side,var(--electric-glow),transparent 70%);opacity:.5;pointer-events:none;}
+.showcase .info{position:relative;z-index:1;}
+.showcase h3{font-size:clamp(1.9rem,3.6vw,2.7rem);margin:.3em 0 .5em;}
+.chip{display:inline-flex;align-items:center;gap:.5em;font-family:"JetBrains Mono",monospace;font-size:.7rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--electric-2);
+  border:1px solid rgba(45,125,255,.4);border-radius:999px;padding:5px 12px;background:rgba(45,125,255,.08);}
+.tags{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0 26px;}
+.tag{font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 12px;}
+
+/* media frame (screenshots / trailer) */
+.media{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line-strong);
+  background:linear-gradient(135deg,#0a1124,#16203f);aspect-ratio:16/10;}
+.media .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted-2);text-align:center;padding:20px;}
+.media .placeholder .play{width:58px;height:58px;border-radius:50%;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);}
+.media .placeholder .play svg{width:20px;height:20px;margin-left:3px;fill:var(--electric-2);}
+.media .placeholder small{font-family:"JetBrains Mono",monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;}
+.video-embed{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--line-strong);}
+.video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+
+/* ============================================================
+   CARD GRIDS (highlights / services / tech)
+   ============================================================ */
+.grid{display:grid;gap:20px;}
+.grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.grid.cols-4{grid-template-columns:repeat(4,1fr);}
+.grid.cols-2{grid-template-columns:repeat(2,1fr);}
+
+.card{background:linear-gradient(160deg,var(--surface),var(--bg-2));border:1px solid var(--line);
+  border-radius:var(--radius);padding:30px;transition:transform .28s var(--ease),border-color .28s var(--ease),box-shadow .28s var(--ease);position:relative;overflow:hidden;}
+.card:hover{transform:translateY(-4px);border-color:rgba(45,125,255,.45);box-shadow:0 18px 50px -22px var(--electric-glow);}
+.card .ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:rgba(45,125,255,.1);border:1px solid rgba(45,125,255,.25);margin-bottom:18px;}
+.card .ic svg{width:22px;height:22px;stroke:var(--electric-2);fill:none;stroke-width:1.7;}
+.card h3{font-size:1.18rem;margin-bottom:.5em;}
+.card p{font-size:.95rem;margin:0;}
+
+/* highlight stat cards */
+.hl h3{font-size:1.05rem;color:var(--white);}
+.hl .k{font-family:"Space Grotesk";font-size:1.5rem;color:var(--gold);font-weight:600;margin-bottom:6px;}
+
+/* ============================================================
+   PROCESS (numbered sequence)
+   ============================================================ */
+.process{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.step{background:var(--bg-2);padding:30px;transition:background .25s var(--ease);}
+.step:hover{background:var(--surface);}
+.step .n{font-family:"JetBrains Mono",monospace;color:var(--electric-2);font-size:.85rem;letter-spacing:.1em;}
+.step h4{font-size:1.12rem;margin:14px 0 .5em;}
+.step p{font-size:.92rem;margin:0;}
+
+/* ============================================================
+   ABOUT / split content
+   ============================================================ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:start;}
+.lead-statement{font-family:"Space Grotesk";font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.28;color:var(--white);font-weight:500;}
+.lead-statement em{font-style:normal;color:var(--gold);}
+.mv{display:grid;gap:18px;}
+.mv .card h3{display:flex;align-items:center;gap:.5em;}
+
+/* ============================================================
+   PROJECTS / PC games
+   ============================================================ */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px;}
+.proj{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .28s var(--ease),border-color .28s var(--ease);}
+.proj:hover{transform:translateY(-4px);border-color:var(--line-strong);}
+.proj .thumb{aspect-ratio:16/10;background:linear-gradient(135deg,#0a1124,#16203f);display:flex;align-items:center;justify-content:center;color:var(--muted-2);font-family:"JetBrains Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--line);}
+.proj .body{padding:24px;}
+.proj h3{font-size:1.3rem;margin-bottom:.4em;}
+.proj.soon .thumb{opacity:.55;}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start;}
+.field{margin-bottom:18px;}
+.field label{display:block;font-family:"JetBrains Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.field input,.field textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;color:var(--white);font-family:"Inter";font-size:.98rem;transition:border-color .2s,box-shadow .2s;resize:vertical;}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--electric);box-shadow:0 0 0 3px rgba(45,125,255,.18);}
+.field textarea{min-height:130px;}
+.contact-side .row{display:flex;align-items:flex-start;gap:14px;padding:18px 0;border-bottom:1px solid var(--line);}
+.contact-side .row .ic{width:40px;height:40px;flex:none;border-radius:11px;background:rgba(235,193,120,.1);border:1px solid rgba(235,193,120,.25);display:flex;align-items:center;justify-content:center;}
+.contact-side .row .ic svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.7;}
+.contact-side .row .lbl{font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.contact-side .row a,.contact-side .row span.val{color:var(--white);font-size:1rem;}
+.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+.socials a{width:44px;height:44px;border-radius:11px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .2s var(--ease);}
+.socials a:hover{color:#fff;border-color:var(--electric);background:rgba(45,125,255,.1);transform:translateY(-2px);}
+.socials a svg{width:19px;height:19px;fill:currentColor;}
+.form-note{font-size:.82rem;color:var(--muted-soft);margin-top:8px;}
+
+/* ============================================================
+   CONTACT CTA band
+   ============================================================ */
+.cta-band{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(135deg,var(--surface-2),var(--bg-2));padding:64px 40px;text-align:center;}
+.cta-band::before{content:"";position:absolute;inset:0;background:radial-gradient(500px 300px at 50% -20%,var(--electric-glow),transparent 65%);opacity:.6;pointer-events:none;}
+.cta-band > *{position:relative;z-index:1;}
+.cta-band h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:.4em;}
+.cta-band .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px;}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{border-top:1px solid var(--line);padding:50px 0 40px;margin-top:40px;}
+.foot-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:30px;}
+.foot-cols{display:flex;gap:60px;flex-wrap:wrap;}
+.foot-col h5{font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:500;}
+.foot-col a{display:block;color:var(--muted-2);font-size:.92rem;padding:5px 0;transition:color .2s;}
+.foot-col a:hover{color:var(--white);}
+.foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted-soft);font-size:.84rem;}
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+.reveal.d1{transition-delay:.08s;}.reveal.d2{transition-delay:.16s;}.reveal.d3{transition-delay:.24s;}
+
+a:focus-visible,.btn:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:980px){
+  .grid.cols-4{grid-template-columns:repeat(2,1fr);}
+  .grid.cols-3{grid-template-columns:repeat(2,1fr);}
+  .process{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:860px){
+  .menu,.nav-cta{display:none;}
+  .burger{display:flex;}
+  .menu.open{display:flex;position:fixed;inset:64px 0 auto 0;flex-direction:column;gap:4px;
+    background:rgba(7,10,20,.97);backdrop-filter:blur(16px);padding:18px 22px 26px;
+    border-bottom:1px solid var(--line);z-index:70;animation:pageIn .3s var(--ease);}
+  .menu.open a{padding:13px 8px;font-size:1.05rem;border-bottom:1px solid var(--line);}
+  .menu.open .nav-cta{display:block;margin:14px 0 0;text-align:center;}
+  .showcase,.split,.contact-grid{grid-template-columns:1fr;gap:34px;}
+  .showcase{padding:30px;}
+  .proj-grid{grid-template-columns:1fr;}
+  .section{padding:72px 0;}
+}
+@media(max-width:560px){
+  .grid.cols-4,.grid.cols-3,.grid.cols-2,.process{grid-template-columns:1fr;}
+  .wrap{padding:0 20px;}
+  .nav-inner{padding:14px 20px;}
+  .cta-band{padding:48px 24px;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important;transition-duration:.01ms!important;}
+  .reveal{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     REPLACE: swap the inline <svg> logo for your own brand mark:
+     <img src="assets/logo.svg" alt="Rash Game Studios" style="height:34px">
+     ============================================================ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#home" class="logo" data-link aria-label="Rash Game Studios home">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path class="mark-stroke" d="M24 3 L42 13 V35 L24 45 L6 35 V13 Z" stroke="url(#g1)" stroke-width="2"/>
+        <path class="mark-core" d="M18 32 V16 H26 a6 6 0 0 1 0 12 H20 l8 4" stroke="url(#g2)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <defs>
+          <linearGradient id="g1" x1="6" y1="3" x2="42" y2="45"><stop stop-color="#2D7DFF"/><stop offset="1" stop-color="#EBC178"/></linearGradient>
+          <linearGradient id="g2" x1="18" y1="16" x2="30" y2="36"><stop stop-color="#5AA0FF"/><stop offset="1" stop-color="#2D7DFF"/></linearGradient>
+        </defs>
+      </svg>
+      <span class="name"><b>RASH</b> <span>GAME&nbsp;STUDIOS</span></span>
+    </a>
+
+    <nav class="menu" id="menu">
+      <a href="#home" data-link>Home</a>
+      <a href="#about" data-link>About</a>
+      <a href="#projects" data-link>Projects</a>
+      <a href="#pc-games" data-link>PC Games</a>
+      <a href="#services" data-link>Services</a>
+      <a href="#technology" data-link>Technology</a>
+      <a href="#contact" data-link>Contact</a>
+      <a href="#contact" class="btn primary nav-cta" data-link>Contact Us</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================
+     HOME
+     ============================================================ -->
+<div class="page" id="home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-anim">
+      <span class="badge"><span class="live"></span>Independent Game Studio · Hyderabad, India</span>
+
+      <!-- REPLACE this hero logo with your animated logo / brand image if you have one -->
+      <svg class="hero-logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path class="mark-stroke" d="M24 3 L42 13 V35 L24 45 L6 35 V13 Z" stroke="url(#hg1)" stroke-width="1.8"/>
+        <path class="mark-core" d="M18 32 V16 H26 a6 6 0 0 1 0 12 H20 l8 4" stroke="url(#hg2)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="hg1" x1="6" y1="3" x2="42" y2="45"><stop stop-color="#2D7DFF"/><stop offset="1" stop-color="#EBC178"/></linearGradient>
+          <linearGradient id="hg2" x1="18" y1="16" x2="30" y2="36"><stop stop-color="#5AA0FF"/><stop offset="1" stop-color="#2D7DFF"/></linearGradient>
+        </defs>
+      </svg>
+
+      <h1>Building Games.<br><span class="grad-text">Accelerating Innovation.</span></h1>
+      <p class="sub">Mobile games, multiplayer experiences, and AI-assisted game development.</p>
+      <div class="cta-row">
+        <a href="#projects" class="btn primary" data-link>View Projects <span class="arrow">→</span></a>
+        <a href="#contact" class="btn ghost" data-link>Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED GAME SHOWCASE -->
+  <section class="section" style="padding-top:30px;">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Featured Game</span>
+        <h2>Our flagship <span class="gold-text">multiplayer racer</span>.</h2>
+      </div>
+      <div class="showcase reveal">
+        <div class="info">
+          <span class="chip">In Development</span>
+          <h3>REDLINE <span style="color:var(--muted);font-size:.5em;font-weight:400;">(working title)</span></h3>
+          <p>A real-time multiplayer racing game for mobile — room-based races for up to 8 players, in-game voice, real-world car physics, and a clean, fast-loading experience built in Unity.</p>
+          <div class="tags">
+            <span class="tag">Unity</span><span class="tag">Photon Multiplayer</span>
+            <span class="tag">Android</span><span class="tag">Up to 8 players</span>
+          </div>
+          <a href="#projects" class="btn ghost" data-link>See the project <span class="arrow">→</span></a>
+        </div>
+        <!-- REPLACE: screenshot or trailer. For a screenshot, drop an <img>. For a trailer, see the video-embed snippet on the Projects page. -->
+        <div class="media">
+          <div class="placeholder">
+            <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <small>Add screenshot / trailer</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDIO HIGHLIGHTS -->
+  <section class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Studio Highlights</span>
+        <h2>An independent studio, built for <span class="gold-text">speed and quality</span>.</h2>
+      </div>
+      <div class="grid cols-4">
+        <div class="card hl reveal"><div class="k">Indie</div><h3>Founder-led</h3><p>A focused, independent team that moves fast and ships with intent.</p></div>
+        <div class="card hl reveal d1"><div class="k">AI</div><h3>AI-accelerated</h3><p>Modern AI-assisted workflows speed up iteration without cutting quality.</p></div>
+        <div class="card hl reveal d2"><div class="k">Live</div><h3>Multiplayer-first</h3><p>Real-time, room-based multiplayer engineered from the ground up.</p></div>
+        <div class="card hl reveal d3"><div class="k">Mobile</div><h3>Optimized delivery</h3><p>Lightweight, smooth builds tuned for real devices and real networks.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES (preview) -->
+  <section class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Services</span>
+        <h2>What we build for <span class="gold-text">clients &amp; partners</span>.</h2>
+        <p>From a prototype to a shipped multiplayer title — end to end, or wherever you need a hand.</p>
+      </div>
+      <div class="grid cols-3" id="services-preview"></div>
+      <div style="margin-top:30px;" class="reveal">
+        <a href="#services" class="btn ghost" data-link>All services <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVELOPMENT PROCESS -->
+  <section class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Development Process</span>
+        <h2>From idea to launch, <span class="gold-text">accelerated</span>.</h2>
+      </div>
+      <div class="process reveal">
+        <div class="step"><span class="n">01</span><h4>Discovery &amp; Concept</h4><p>We align on the vision, scope, and the player you're building for.</p></div>
+        <div class="step"><span class="n">02</span><h4>AI-Assisted Prototyping</h4><p>Rapid playable prototypes — testing the fun before the polish.</p></div>
+        <div class="step"><span class="n">03</span><h4>Production</h4><p>Core systems and content built in Unity with a clean architecture.</p></div>
+        <div class="step"><span class="n">04</span><h4>Multiplayer &amp; Systems</h4><p>Real-time networking, matchmaking, and live services wired in.</p></div>
+        <div class="step"><span class="n">05</span><h4>Polish &amp; Optimization</h4><p>Performance, feel, and UX tuned across target devices.</p></div>
+        <div class="step"><span class="n">06</span><h4>Launch &amp; Support</h4><p>Store-ready builds, release, and ongoing iteration.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <span class="eyebrow" style="justify-content:center;">Let's talk</span>
+        <h2>Have a game to build, or a studio to back?</h2>
+        <p>Whether you're a publisher, a client, or a player who's curious — we'd love to hear from you.</p>
+        <div class="cta-row">
+          <a href="#contact" class="btn gold" data-link>Contact Us <span class="arrow">→</span></a>
+          <a href="#projects" class="btn ghost" data-link>View Projects</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<div class="page" id="about">
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">About Us</span>
+        <h2>An independent studio with a <span class="gold-text">future-focused</span> approach.</h2>
+      </div>
+
+      <div class="split reveal">
+        <p class="lead-statement">Rash Game Studios builds mobile games, multiplayer experiences, and client projects — pairing real craft with <em>modern AI-assisted production</em> to move faster without losing the soul of the game.</p>
+        <div class="body-col">
+          <p>We're an independent studio based in Hyderabad, India, founded by a developer who learned the craft by shipping — game jams, mobile releases, and a lot of hands-on engineering. That self-taught, build-it-yourself instinct is still how we work.</p>
+          <p>Today the studio takes on two kinds of work: our own original titles, and client game development for teams who need a partner that can prototype, build, and ship. AI-assisted workflows let a small team punch well above its size.</p>
+        </div>
+      </div>
+
+      <div class="mv grid cols-2" style="margin-top:50px;">
+        <div class="card reveal"><h3 class="gold-text">Mission</h3><p>To build games that feel great to play and to help others ship theirs — using modern, AI-accelerated production to make ambitious work achievable for a small, independent team.</p></div>
+        <div class="card reveal d1"><h3 class="gold-text">Vision</h3><p>To grow Rash into a recognised independent studio with a team, a home, and a shelf of titles — known for multiplayer craft and a fast, fearless approach to development.</p></div>
+      </div>
+
+      <div class="sec-head reveal" style="margin-top:64px;">
+        <span class="eyebrow">Our Philosophy</span>
+        <h2>AI-assisted, <span class="gold-text">player-first</span>.</h2>
+        <p>We use AI to accelerate the parts of development that slow teams down — iteration, content, tooling — so our energy goes where it matters: the player's experience. AI speeds the work; people make the decisions. Quality is never the thing we trade for speed.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PROJECTS
+     ============================================================ -->
+<div class="page" id="projects">
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Projects</span>
+        <h2>What we're <span class="gold-text">building</span>.</h2>
+        <p>Our flagship title is in active development, with more on the way. Nothing's on the stores yet — we're building in the open.</p>
+      </div>
+
+      <!-- FEATURED PROJECT -->
+      <div class="showcase reveal">
+        <div class="info">
+          <span class="chip">In Development · Mobile</span>
+          <h3>REDLINE <span style="color:var(--muted);font-size:.5em;font-weight:400;">(working title)</span></h3>
+          <p>A real-time multiplayer racing game built in Unity. Room-based races for up to 8 players, in-game voice chat, real-world car physics, and a minimal, fast UI. Custom car roster with more vehicles to come.</p>
+          <div class="tags">
+            <span class="tag">Unity</span><span class="tag">Photon PUN 2</span><span class="tag">Voice Chat</span>
+            <span class="tag">Android</span><span class="tag">URP</span>
+          </div>
+        </div>
+
+        <!-- ============================================================
+             REPLACE WITH A TRAILER:
+             1) Delete the <div class="media">...</div> block below.
+             2) Paste this, swapping VIDEO_ID for your YouTube video id:
+             <div class="video-embed">
+               <iframe src="https://www.youtube.com/embed/VIDEO_ID"
+                 title="Redline trailer" allowfullscreen
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+             </div>
+             For a screenshot instead: <div class="media"><img src="assets/redline.jpg" alt="Redline gameplay"></div>
+             ============================================================ -->
+        <div class="media">
+          <div class="placeholder">
+            <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <small>Add gameplay / trailer</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUTURE RELEASES -->
+      <div class="sec-head reveal" style="margin:64px 0 0;">
+        <span class="eyebrow">Coming Next</span>
+        <h2>More titles in the <span class="gold-text">pipeline</span>.</h2>
+      </div>
+      <div class="proj-grid">
+        <div class="proj soon reveal"><div class="thumb">Screenshot soon</div><div class="body"><span class="chip">Planned</span><h3 style="margin-top:14px;">Untitled Mobile Title</h3><p style="margin:0;">A new original game in early concept. Details coming soon.</p></div></div>
+        <div class="proj soon reveal d1"><div class="thumb">Screenshot soon</div><div class="body"><span class="chip">Planned</span><h3 style="margin-top:14px;">Client Project Slot</h3><p style="margin:0;">Space reserved for upcoming client / partner work.</p></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PC GAMES
+     ============================================================ -->
+<div class="page" id="pc-games">
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">PC Games</span>
+        <h2>Narrative games for <span class="gold-text">PC &amp; Steam</span>.</h2>
+        <p>Alongside our mobile and multiplayer work, we're building story-driven games for PC.</p>
+      </div>
+
+      <div class="showcase reveal">
+        <div class="info">
+          <span class="chip">In Development · PC / Steam</span>
+          <h3>Hold On Happy</h3>
+          <p>A 3D narrative adventure about Kai, his dog Happy, and the people we hold onto. A handful of quiet, connected moments and one ending that stays with you — built in Unity 6, aiming for a few unhurried hours of story.</p>
+          <div class="tags">
+            <span class="tag">Unity 6</span><span class="tag">Narrative</span>
+            <span class="tag">Single-player</span><span class="tag">PC · Steam</span>
+          </div>
+          <p style="margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.08em;color:var(--gold);">STEAM PAGE COMING SOON</p>
+        </div>
+        <!-- REPLACE with Hold On Happy screenshots or trailer (same embed snippet as Projects page) -->
+        <div class="media">
+          <div class="placeholder">
+            <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <small>Add screenshot / trailer</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     SERVICES
+     ============================================================ -->
+<div class="page" id="services">
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Services</span>
+        <h2>Full-cycle game development, <span class="gold-text">accelerated by AI</span>.</h2>
+        <p>Engage us end-to-end, or bring us in for the part you need.</p>
+      </div>
+      <div class="grid cols-3" id="services-full"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     TECHNOLOGY
+     ============================================================ -->
+<div class="page" id="technology">
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Technology</span>
+        <h2>The stack behind the <span class="gold-text">studio</span>.</h2>
+        <p>Proven engines and modern workflows, chosen for speed, scale, and player experience.</p>
+      </div>
+      <div class="grid cols-2">
+        <div class="card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5L3 7"/></svg></div>
+          <h3>Unity</h3><p>Our primary engine for 2D, 3D, mobile, and PC — with URP pipelines tuned for performance across devices.</p>
+        </div>
+        <div class="card reveal d1">
+          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></div>
+          <h3>AI-Assisted Development</h3><p>Modern AI workflows accelerate prototyping, content, and tooling — compressing iteration cycles while we keep creative control.</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.5 7.5L11 16M16.5 7.5L13 16M8 6h8"/></svg></div>
+          <h3>Multiplayer Systems</h3><p>Real-time, room-based networking with matchmaking and in-game voice — engineered for low latency and smooth play.</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="ic"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+          <h3>Mobile Optimization</h3><p>Lightweight builds, efficient rendering, and careful memory budgets so games run smoothly on real-world phones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<div class="page" id="contact">
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Contact</span>
+        <h2>Let's build something <span class="gold-text">together</span>.</h2>
+        <p>Tell us about your project, your studio, or just say hello.</p>
+      </div>
+
+      <div class="contact-grid reveal">
+        <!-- FORM: works with no backend (opens the visitor's email app pre-filled).
+             To collect submissions on a server instead, see the comment in the <script> below. -->
+        <div>
+          <form id="contact-form">
+            <div class="field"><label for="cf-name">Name</label><input id="cf-name" name="name" type="text" required placeholder="Your name" /></div>
+            <div class="field"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" required placeholder="you@email.com" /></div>
+            <div class="field"><label for="cf-subject">Subject</label><input id="cf-subject" name="subject" type="text" placeholder="Project, collaboration, publishing…" /></div>
+            <div class="field"><label for="cf-message">Message</label><textarea id="cf-message" name="message" required placeholder="Tell us a bit about it"></textarea></div>
+            <button type="submit" class="btn primary">Send Message <span class="arrow">→</span></button>
+            <p class="form-note" id="form-status"></p>
+          </form>
+        </div>
+
+        <!-- CONTACT DETAILS + SOCIALS -->
+        <div class="contact-side">
+          <div class="row">
+            <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+            <div><div class="lbl">Email</div><a href="mailto:hello@rashgamesstudios.com">hello@rashgamesstudios.com</a></div>
+          </div>
+          <div class="row">
+            <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg></div>
+            <div><div class="lbl">Studio</div><span class="val">Hyderabad, India</span></div>
+          </div>
+
+          <!-- SOCIAL LINKS — replace the href="#" placeholders with your real URLs -->
+          <div class="socials" style="margin-top:26px;">
+            <a href="https://youtube.com/@gamedevteluguoffl" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.78 2.78 0 0 0-1.95-2C18.88 4.3 12 4.3 12 4.3s-6.88 0-8.6.5a2.78 2.78 0 0 0-1.95 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.78 2.78 0 0 0 1.95 2c1.72.5 8.6.5 8.6.5s6.88 0 8.6-.5a2.78 2.78 0 0 0 1.95-2C23 15.5 23 12 23 12zM9.75 15.5v-7l6 3.5z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram — add your link">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram — add your link">
+              <svg viewBox="0 0 24 24"><path d="M21.5 4.3L2.8 11.4c-1 .4-1 1.3 0 1.6l4.7 1.5 1.8 5.6c.2.6.5.7 1 .3l2.6-2.1 4.9 3.6c.6.4 1.2.2 1.4-.6l3-13.9c.2-1-.4-1.5-1.2-1.1z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="X" title="X / Twitter — add your link">
+              <svg viewBox="0 0 24 24"><path d="M18 3h3l-7 8 8 10h-6l-5-6-5 6H3l8-9L3 3h6l4 5z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn — add your link">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 17v-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div style="max-width:280px;">
+        <a href="#home" class="logo" data-link style="margin-bottom:14px;">
+          <svg viewBox="0 0 48 48" fill="none" width="30" height="30" aria-hidden="true">
+            <path d="M24 3 L42 13 V35 L24 45 L6 35 V13 Z" stroke="url(#fg1)" stroke-width="2"/>
+            <path d="M18 32 V16 H26 a6 6 0 0 1 0 12 H20 l8 4" stroke="#5AA0FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="fg1" x1="6" y1="3" x2="42" y2="45"><stop stop-color="#2D7DFF"/><stop offset="1" stop-color="#EBC178"/></linearGradient></defs>
+          </svg>
+          <span class="name"><b>RASH</b> <span>GAME&nbsp;STUDIOS</span></span>
+        </a>
+        <p style="font-size:.9rem;">Building games. Accelerating innovation. From Hyderabad, India.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col"><h5>Studio</h5><a href="#about" data-link>About</a><a href="#technology" data-link>Technology</a><a href="#contact" data-link>Contact</a></div>
+        <div class="foot-col"><h5>Games</h5><a href="#projects" data-link>Projects</a><a href="#pc-games" data-link>PC Games</a><a href="#services" data-link>Services</a></div>
+        <div class="foot-col"><h5>Connect</h5><a href="https://youtube.com/@gamedevteluguoffl" target="_blank" rel="noopener">YouTube</a><a href="#" target="_blank" rel="noopener">Instagram</a><a href="mailto:hello@rashgamesstudios.com">Email</a></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Rash Game Studios. All rights reserved.</span>
+      <span>Made with care · Hyderabad, India</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA — services (rendered into Home preview + Services page)
+   ============================================================ */
+const services = [
+  {t:"Unity Game Development", d:"End-to-end 2D, 3D, and mobile games built in Unity with clean, scalable architecture.",
+   i:'<path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12"/>'},
+  {t:"Multiplayer Integration", d:"Real-time, room-based networking, matchmaking, and in-game voice for connected play.",
+   i:'<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.5 7.5L11 16M16.5 7.5L13 16"/>'},
+  {t:"Mobile Game Development", d:"Lightweight, optimized Android & iOS titles tuned for real devices and networks.",
+   i:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>'},
+  {t:"Game Prototyping", d:"Fast, playable prototypes to validate the fun before committing to full production.",
+   i:'<path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8"/><circle cx="12" cy="12" r="4"/>'},
+  {t:"Client Projects", d:"Reliable studio-grade development for teams who need a partner to prototype, build, or ship.",
+   i:'<path d="M3 7h18v12H3z"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'},
+  {t:"AI-Assisted Production", d:"Modern AI pipelines that accelerate iteration, content, and tooling — without sacrificing quality.",
+   i:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'}
+];
+function svc(s){
+  return `<div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24">${s.i}</svg></div><h3>${s.t}</h3><p>${s.d}</p></div>`;
+}
+document.getElementById('services-preview').innerHTML = services.slice(0,3).map(svc).join('');
+document.getElementById('services-full').innerHTML = services.map(svc).join('');
+
+/* ============================================================
+   YEAR
+   ============================================================ */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ============================================================
+   ROUTING (hash-based "pages")
+   ============================================================ */
+const pages = document.querySelectorAll('.page');
+function show(id){
+  const target = document.getElementById(id) ? id : 'home';
+  pages.forEach(p => p.classList.toggle('active', p.id === target));
+  document.querySelectorAll('.menu a[data-link]').forEach(a =>
+    a.classList.toggle('active', a.getAttribute('href') === '#' + target && !a.classList.contains('nav-cta'))
+  );
+  window.scrollTo({top:0, behavior:'auto'});
+  closeMenu();
+  runReveals();
+}
+function route(){ show((location.hash || '#home').slice(1)); }
+window.addEventListener('hashchange', route);
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+const burger = document.getElementById('burger');
+const menu = document.getElementById('menu');
+function closeMenu(){ document.body.classList.remove('menu-open'); menu.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+burger.addEventListener('click', ()=>{
+  const open = menu.classList.toggle('open');
+  document.body.classList.toggle('menu-open', open);
+  burger.setAttribute('aria-expanded', open ? 'true':'false');
+});
+
+/* ============================================================
+   SCROLL REVEALS
+   ============================================================ */
+let io;
+function runReveals(){
+  const items = document.querySelectorAll('.page.active .reveal');
+  if(!('IntersectionObserver' in window)){ items.forEach(i=>i.classList.add('in')); return; }
+  if(io) io.disconnect();
+  io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -6% 0px'});
+  items.forEach(i=>{ i.classList.remove('in'); io.observe(i); });
+}
+
+/* ============================================================
+   NAV SCROLL STATE
+   ============================================================ */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=> nav.classList.toggle('scrolled', window.scrollY > 8), {passive:true});
+
+/* ============================================================
+   CONTACT FORM
+   Default: opens the visitor's email app, pre-filled to your address.
+   TO COLLECT SUBMISSIONS ON A SERVER (recommended):
+     1. Create a free form endpoint at formspree.io (or getform.io).
+     2. Replace this handler with a normal POST to that endpoint
+        (set form.action + form.method and remove the mailto block).
+   ============================================================ */
+const form = document.getElementById('contact-form');
+const status = document.getElementById('form-status');
+form.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const subject = document.getElementById('cf-subject').value.trim() || 'New enquiry from rashgamesstudios.com';
+  const message = document.getElementById('cf-message').value.trim();
+  if(!name || !email || !message){ status.textContent = 'Please fill in your name, email, and message.'; return; }
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+  window.location.href = `mailto:hello@rashgamesstudios.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+  status.textContent = 'Opening your email app…';
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+route();
+</script>
+</body>
+</html>

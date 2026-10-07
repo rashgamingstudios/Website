@@ -1,0 +1,224 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import "tailwindcss";
+
+/*
+  Palette derived from the Rash Game Studios logo:
+  - ink:  the deep navy of the "R" mark
+  - blue: the electric slash cutting through the R — the studio's primary accent
+  The playful set (coral / sun / mint / grape / punch) color-codes individual games.
+*/
+@theme {
+  --color-base: #f7f8fa;
+  --color-ink: #101828;
+  --color-ink-soft: #4a5468;
+  --color-blue: #1290f0;
+  --color-coral: #ff5c47;
+  --color-sun: #ffb534;
+  --color-mint: #17c393;
+  --color-grape: #8b5cf6;
+  --color-punch: #ff5c7a;
+  /* Semantic tokens so both themes share one set of component styles.
+     In light mode these resolve to the exact values the site already used. */
+  --color-surface: #ffffff; /* card / band backgrounds (was bg-white) */
+  --color-deep: #101828; /* the community/footer slab — stays dark in BOTH themes */
+  --color-on-ink: #ffffff; /* text sitting on bg-ink elements */
+  --color-on-accent: #ffffff; /* text sitting on accent-colored fills */
+  --color-amber: #e89b12; /* Hold On Happy screenshot placeholder tone */
+  /* Cartbo — the flagship sits on a deep navy slab lit by one cool blue.
+     Single-accent, so it reads as a product surface without fighting the
+     studio palette the rest of the page is built from. */
+  --color-cartbo-deep: #0e1b2e; /* the slab */
+  --color-cartbo-accent: #5fa8e6; /* headings, dots, fills on that slab */
+  --color-on-cartbo-accent: #0b1626; /* text sitting on an accent fill */
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  /* Hold On Happy's warm section gradient, themed separately from the tokens. */
+  --hoh-from: #fff6e7;
+  --hoh-to: #fffbf2;
+}
+
+/* ---- Dark mode: pure black base. Cards and slabs lift off it by only a few
+   points of luminance, so separation is carried by the borders rather than by
+   big background jumps. Accents stay desaturated — calm, never glowing.
+   Hue relationships (service/section color-coding) are preserved 1:1. ---- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-base: #000000;
+  --color-ink: #f1f3f8;
+  --color-ink-soft: #9aa3b8;
+  --color-blue: #5fa8e6;
+  --color-coral: #e0796a;
+  --color-sun: #d9ab5e;
+  --color-mint: #46bfa0;
+  --color-grape: #a08ce0;
+  --color-punch: #db7f95;
+  --color-surface: #101016;
+  --color-deep: #08080c;
+  --color-on-ink: #000000;
+  --color-on-accent: #05050a;
+  --color-amber: #c9a054;
+  --color-cartbo-deep: #0b1829;
+  --color-cartbo-accent: #5fa8e6;
+  --color-on-cartbo-accent: #060e19;
+  --hoh-from: #1b1815;
+  --hoh-to: #16151a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--color-blue);
+  color: var(--color-on-accent);
+}
+
+/* ---- Hero entrance (page-load reveal) ---- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.85s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+}
+
+/* ---- Scroll-triggered reveals ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Hero marquee ---- */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---- Living game cards (the signature element) ----
+   Each card carries its game's accent in --game; on hover it lifts,
+   tilts, and glows in that color. Even cards tilt the other way. */
+.game-card {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 0.9, 0.3, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+.game-card:hover,
+.game-card:focus-within,
+.game-card.car-bump {
+  transform: translateY(-8px) rotate(-1.4deg);
+  box-shadow: 0 30px 60px -26px var(--game);
+  border-color: var(--game);
+}
+.game-card:nth-child(even):hover,
+.game-card:nth-child(even):focus-within,
+.game-card:nth-child(even).car-bump {
+  transform: translateY(-8px) rotate(1.4deg);
+}
+
+/* Slash shine that sweeps across card art on hover — echo of the logo mark */
+.slash-shine {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.slash-shine::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: -35%;
+  width: 26%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-24deg);
+  transition: left 0.55s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.game-card:hover .slash-shine::after,
+.game-card:focus-within .slash-shine::after,
+.game-card.car-bump .slash-shine::after {
+  left: 115%;
+}
+
+/* ---- Cadence timeline pulse on the "up next" node ---- */
+@keyframes pulse-dot {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--game) 50%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2.2s ease-out infinite;
+}
+
+/* ---- Reduced motion: everything settles, nothing moves ---- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise,
+  .marquee-track,
+  .pulse-dot {
+    animation: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .game-card,
+  .game-card:hover,
+  .game-card:focus-within,
+  .game-card.car-bump {
+    transition: none;
+    transform: none;
+  }
+  .slash-shine::after {
+    display: none;
+  }
+}

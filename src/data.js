@@ -11,11 +11,10 @@
 export const BLUE = "var(--color-blue)";
 
 export const STUDIO = {
-  // Carried over from the previous live site, which used this exact address.
-  // NOTE: the repo's CNAME serves the site from rashgamestudios.com (one 's'),
-  // while this address uses rashgamesstudios.com (two). If that is a typo
-  // rather than two domains you own, fix it here and every link follows.
-  email: "hello@rashgamesstudios.com",
+  // rashgamesstudios.com (two 's') does not resolve — the old site's contact
+  // address was on a domain that was never registered. This matches the CNAME,
+  // which is the domain that actually serves the site.
+  email: "hello@rashgamestudios.com",
   clients: "10+",
 };
 

@@ -12,11 +12,11 @@ export const team = [
     links: { twitter: "", linkedin: "", github: "" },
   },
   {
-    id: "developer",
-    name: "[insert name]",
-    role: "Developer",
-    bio: "I make the cars drift and the frogs jump. If something in one of our games feels weirdly satisfying to touch, that was probably a whole week of my life.",
-    photo_url: "/team/developer.png",
+    id: "the-team",
+    name: "The team",
+    role: "Collaborators",
+    bio: "Artists, animators, 3D modellers and sound designers we bring in per project. A small core with people we trust around it, so a bigger build doesn't have to mean a slower one.",
+    photo_url: "/team/team.png",
     links: { twitter: "", linkedin: "", github: "" },
   },
 ];

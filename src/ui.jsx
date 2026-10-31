@@ -1,42 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 
 /*
- * Logo — a code recreation of the Rash mark (bold R cut by the blue slash).
- * Swap the <LogoMark> SVG for the real logo file (e.g. /logo.svg in /public)
- * when you drop assets in: <img src="/logo.svg" alt="Rash Game Studios" />.
- * `gap` should match the background the logo sits on, so the slash reads as a cut.
+ * Logo — the real studio mark, as a rounded tile.
+ *
+ * The artwork is white-and-blue on its own deep navy, so it can't sit directly
+ * on the light theme's background. Keeping that navy as a rounded tile solves
+ * it: one asset reads correctly in both themes and needs no light/dark variant.
+ * The wordmark beside it stays live text, so it themes with everything else.
  */
-export function LogoMark({ className = "h-9 w-9", gap = "var(--color-base)", ink = "var(--color-ink)" }) {
+export function LogoMark({ className = "h-9 w-9" }) {
   return (
-    <svg viewBox="0 0 48 48" className={className} aria-hidden="true">
-      <text
-        x="24"
-        y="39"
-        textAnchor="middle"
-        fontFamily="Sora, sans-serif"
-        fontWeight="800"
-        fontSize="44"
-        fill={ink}
-      >
-        R
-      </text>
-      <g transform="rotate(-30 24 26)">
-        <rect x="-10" y="21.5" width="68" height="9" fill={gap} />
-        <rect x="-10" y="23.5" width="68" height="5" fill="#1290f0" />
-        <polygon points="58,23.5 66,26 58,28.5" fill="#1290f0" />
-      </g>
-    </svg>
+    <img
+      src="/icon.png"
+      alt=""
+      aria-hidden="true"
+      width="512"
+      height="512"
+      className={`${className} shrink-0 rounded-[22%] object-cover`}
+    />
   );
 }
 
-export function Wordmark({ dark = false, gap }) {
+export function Wordmark({ dark = false }) {
   return (
     <span className="flex items-center gap-2.5">
-      <LogoMark
-        className="h-9 w-9 shrink-0"
-        gap={gap ?? (dark ? "var(--color-deep)" : "var(--color-base)")}
-        ink={dark ? "#ffffff" : "var(--color-ink)"}
-      />
+      <LogoMark className="h-9 w-9" />
       <span className="flex flex-col leading-none">
         <span
           className={`font-display text-lg font-extrabold tracking-tight ${
@@ -52,14 +40,99 @@ export function Wordmark({ dark = false, gap }) {
 }
 
 /*
- * Media — clearly-labeled placeholder block for game art / video.
- * ratio: CSS aspect-ratio string. video: shows a play chip so you know
- * a video file goes here, not an image.
+ * Media — real artwork when there is a `src`, a labelled placeholder when there
+ * isn't. Sections can therefore ship before their assets exist and light up on
+ * their own once a file is dropped in.
+ *
+ * ratio:  CSS aspect-ratio string, held whether or not the asset loads, so the
+ *         page never reflows when an image arrives late.
+ * video:  with a src, renders poster-then-click-to-play (preload="none", so a
+ *         heavy clip costs nothing until someone asks for it). Without a src,
+ *         shows a play chip to mark the slot as a video.
+ * A src that 404s falls back to the placeholder rather than a broken image.
  */
-export function Media({ label, ratio = "16/9", color = "var(--color-blue)", video = false, className = "" }) {
+export function Media({
+  label,
+  ratio = "16/9",
+  color = "var(--color-blue)",
+  video = false,
+  src,
+  poster,
+  fit = "cover",
+  className = "",
+}) {
+  const [failed, setFailed] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const hasMedia = Boolean(src) && !failed;
+
   // color-mix instead of hex+alpha so `color` can be a CSS variable that
   // remaps in dark mode; percentages match the old 66/1f/0a/14 alpha values.
   const mix = (pct) => `color-mix(in srgb, ${color} ${pct}%, transparent)`;
+
+  if (hasMedia && video) {
+    return (
+      <div
+        className={`relative overflow-hidden rounded-2xl ${className}`}
+        style={{ aspectRatio: ratio, background: mix(10) }}
+      >
+        {playing ? (
+          <video
+            src={src}
+            poster={poster}
+            controls
+            autoPlay
+            playsInline
+            className="h-full w-full"
+            style={{ objectFit: fit }}
+            onError={() => setFailed(true)}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPlaying(true)}
+            aria-label={`Play — ${label}`}
+            className="group absolute inset-0 h-full w-full cursor-pointer"
+          >
+            {poster && (
+              <img
+                src={poster}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                className="h-full w-full"
+                style={{ objectFit: fit }}
+                onError={() => setFailed(true)}
+              />
+            )}
+            <span className="absolute inset-0 flex items-center justify-center bg-black/15 transition-colors group-hover:bg-black/25">
+              <span
+                className="flex h-16 w-16 items-center justify-center rounded-full shadow-xl transition-transform duration-300 group-hover:scale-110"
+                style={{ background: color }}
+              >
+                <svg viewBox="0 0 24 24" className="ml-1 h-7 w-7" style={{ fill: "var(--color-on-accent)" }}>
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  if (hasMedia) {
+    return (
+      <img
+        src={src}
+        alt={label}
+        loading="lazy"
+        className={`w-full rounded-2xl ${className}`}
+        style={{ aspectRatio: ratio, objectFit: fit }}
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+
   return (
     <div
       role="img"

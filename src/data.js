@@ -155,7 +155,7 @@ export const ownGames = [
       "A multiplayer party racer: short races, ridiculous power-ups, and an automatic roast for whoever finishes last. Built in Unity with Photon Fusion — the project where we learned how to make real-time multiplayer behave.",
     tech: ["Unity", "C#", "Photon Fusion"],
     status: "In development",
-    link: "[insert store link]",
+    link: null,
   },
   {
     id: "hold-on-happy",
@@ -166,7 +166,7 @@ export const ownGames = [
       "Our slowest, most personal project — a third-person narrative adventure about the kind of friendship that doesn't need words. It's the reason the studio exists, and it takes exactly as long as it takes.",
     tech: ["Unity", "C#", "Narrative"],
     status: "In development",
-    link: "[insert wishlist link]",
+    link: null,
   },
 ];
 
@@ -261,31 +261,13 @@ export const process = [
 
 export const channels = [
   {
-    name: "Discord",
-    color: "#5865f2",
-    blurb: "Dev talk, playtests, and the quickest way to reach us.",
-    cta: "Join the Discord",
-    link: "[insert Discord invite]",
-  },
-  {
     name: "YouTube",
     color: "#ff0033",
     blurb: "Devlogs, trailers, and the occasional dog cameo.",
     cta: "Watch on YouTube",
     link: "https://youtube.com/@gamedevteluguoffl",
   },
-  {
-    name: "X / Twitter",
-    color: "#101828",
-    blurb: "Build-in-public updates, sometimes mid-crunch.",
-    cta: "Follow on X",
-    link: "[insert X profile]",
-  },
-  {
-    name: "Instagram",
-    color: "#e1306c",
-    blurb: "Screenshots, key art, and behind-the-scenes.",
-    cta: "Follow on Instagram",
-    link: "[insert Instagram profile]",
-  },
+  // Discord, X and Instagram were removed rather than left pointing nowhere.
+  // Add one back with a real URL and both the contact grid and the footer
+  // pick it up automatically.
 ];

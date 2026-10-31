@@ -151,11 +151,16 @@ function Cartbo() {
           </Reveal>
 
           <Reveal delay={120}>
+            {/* 9:16 to match the promo's own framing — click-to-play, so the
+                4MB clip is never fetched unless someone wants it. */}
             <Media
-              label="Cartbo — the live feed, tap any game to play it instantly (phone mockup)"
-              ratio="4/5"
+              label="Cartbo — product promo"
+              ratio="9/16"
               color="var(--color-cartbo-accent)"
-              className="mx-auto max-w-sm"
+              video
+              src="/cartbo/promo.mp4"
+              poster="/cartbo/promo-poster.jpg"
+              className="mx-auto max-w-[300px]"
             />
           </Reveal>
         </div>
@@ -356,9 +361,12 @@ function OwnGames() {
                       <PlatformChip key={t}>{t}</PlatformChip>
                     ))}
                   </span>
-                  <a href={game.link} className="shrink-0 text-sm font-bold" style={{ color: game.color }}>
-                    Follow it →
-                  </a>
+                  {/* No link until there is somewhere real to send people. */}
+                  {game.link && (
+                    <a href={game.link} className="shrink-0 text-sm font-bold" style={{ color: game.color }}>
+                      Follow it →
+                    </a>
+                  )}
                 </div>
               </div>
             </Reveal>

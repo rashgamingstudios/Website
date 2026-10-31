@@ -21,7 +21,8 @@ function TeamCard({ person, delay }) {
       className="flex w-full max-w-xs flex-col rounded-3xl border-2 border-ink/8 bg-surface p-4 transition-transform duration-300 hover:-translate-y-1 sm:w-72"
     >
       <Media
-        label={`Photo — ${person.name} (drop file at ${person.photo_url})`}
+        label={person.name}
+        src={person.photo_url}
         ratio="1/1"
         color="var(--color-blue)"
       />

@@ -521,8 +521,8 @@ export default function Home() {
     <>
       <Hero />
       <Services />
-      <Cartbo />
       <OwnGames />
+      <Cartbo />
       <Process />
       <Team />
       <Contact />

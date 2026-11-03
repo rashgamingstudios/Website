@@ -8,7 +8,6 @@ import {
   process,
   proof,
   services,
-  testimonials,
 } from "./data.js";
 import { Media, Reveal, Eyebrow, PlatformChip } from "./ui.jsx";
 import Team from "./Team.jsx";
@@ -27,8 +26,7 @@ function Hero() {
           className="rise font-mono text-xs font-bold uppercase tracking-[0.24em] text-ink-soft"
           style={{ animationDelay: "0ms" }}
         >
-          <span className="text-blue" aria-hidden="true">/</span> Game studio · Hyderabad, India ·{" "}
-          {STUDIO.clients} satisfied clients
+          <span className="text-blue" aria-hidden="true">/</span> Game studio · Hyderabad, India
         </p>
 
         <h1
@@ -80,8 +78,8 @@ function Hero() {
           </a>
         </div>
 
-        {/* Proof band — four facts, no invented metrics. */}
-        <ul className="rise mx-auto mt-14 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4" style={{ animationDelay: "480ms" }}>
+        {/* Proof band — only facts we can stand behind. */}
+        <ul className="rise mx-auto mt-14 grid max-w-4xl gap-3 sm:grid-cols-3" style={{ animationDelay: "480ms" }}>
           {proof.map((fact) => (
             <li
               key={fact.k}
@@ -339,7 +337,10 @@ function OwnGames() {
             >
               {/* Kai & Happy idle on the top edge of their own card only. */}
               {game.id === "hold-on-happy" && <KaiAndHappy />}
-              <Media label={`${game.title} key art`} ratio="16/10" color={game.color} />
+              {/* No empty frame: the image area only exists once there is art. */}
+              {game.art && (
+                <Media label={`${game.title} key art`} src={game.art} ratio="16/10" color={game.color} />
+              )}
               <span className="slash-shine" aria-hidden="true" />
               <div className="flex flex-1 flex-col px-1 pt-5">
                 <p className="flex items-center justify-between gap-2">
@@ -441,51 +442,6 @@ function Process() {
   );
 }
 
-/* ------------------------------- Testimonials ------------------------------- */
-
-function Testimonials() {
-  const shown = testimonials.filter((t) => t.quote);
-  if (shown.length === 0) return null;
-  return (
-    <section aria-labelledby="clients-heading" className="border-y border-ink/8 bg-surface py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl px-5">
-        <Reveal className="max-w-2xl">
-          <Eyebrow color="var(--color-grape)">The clients</Eyebrow>
-          <h2 id="clients-heading" className="mt-4 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-            {STUDIO.clients} studios, founders and solo devs.
-          </h2>
-          <p className="mt-3 leading-relaxed text-ink-soft">
-            Some wanted a prototype by Friday. Some wanted a game on CrazyGames that
-            actually passed review. All of them got the source files.
-          </p>
-        </Reveal>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {shown.map((t, i) => (
-            <Reveal
-              as="figure"
-              key={`${t.name}-${i}`}
-              delay={i * 90}
-              className="flex h-full flex-col rounded-3xl border-2 border-ink/8 bg-base p-6"
-            >
-              <span aria-hidden="true" className="font-display text-4xl font-extrabold leading-none text-grape">
-                “
-              </span>
-              <blockquote className="mt-2 flex-1 leading-relaxed text-ink">{t.quote}</blockquote>
-              <figcaption className="mt-5 border-t border-ink/8 pt-4">
-                <span className="block font-display font-bold">{t.name}</span>
-                <span className="block font-mono text-[11px] uppercase tracking-wider text-ink-soft">
-                  {t.role}
-                </span>
-              </figcaption>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* --------------------------------- Contact ---------------------------------- */
 
 function Contact() {
@@ -568,7 +524,6 @@ export default function Home() {
       <Services />
       <OwnGames />
       <Process />
-      <Testimonials />
       <Team />
       <Contact />
     </>

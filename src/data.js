@@ -15,7 +15,6 @@ export const STUDIO = {
   // address was on a domain that was never registered. This matches the CNAME,
   // which is the domain that actually serves the site.
   email: "hello@rashgamestudios.com",
-  clients: "10+",
 };
 
 /* --------------------------------- Cartbo --------------------------------- */
@@ -154,6 +153,8 @@ export const ownGames = [
     desc:
       "A multiplayer party racer: short races, ridiculous power-ups, and an automatic roast for whoever finishes last. Built in Unity with Photon Fusion — the project where we learned how to make real-time multiplayer behave.",
     tech: ["Unity", "C#", "Photon Fusion"],
+    // Drop key art at this path and the image area appears on its own.
+    art: null, // "/games/roast-racers.jpg"
     status: "In development",
     link: null,
   },
@@ -165,6 +166,7 @@ export const ownGames = [
     desc:
       "Our slowest, most personal project — a third-person narrative adventure about the kind of friendship that doesn't need words. It's the reason the studio exists, and it takes exactly as long as it takes.",
     tech: ["Unity", "C#", "Narrative"],
+    art: null, // "/games/hold-on-happy.jpg"
     status: "In development",
     link: null,
   },
@@ -173,19 +175,11 @@ export const ownGames = [
 /* --------------------------------- Proof ---------------------------------- */
 
 export const proof = [
-  { k: "Satisfied clients", v: "10+", c: "var(--color-blue)" },
   { k: "Prototype turnaround", v: "1 day – 1 week", c: "var(--color-sun)" },
-  { k: "Platforms shipped to", v: "Web · CrazyGames · Roblox", c: "var(--color-coral)" },
+  { k: "Platforms we build for", v: "Web · CrazyGames · Roblox", c: "var(--color-blue)" },
   { k: "Launch support", v: "Until approval", c: "var(--color-mint)" },
 ];
 
-/* Swap these for real quotes as you collect them — empty quotes are skipped. */
-export const testimonials = [
-  // Add real quotes here and the section appears on its own. An entry with an
-  // empty quote is skipped, and with none of them filled in the whole section
-  // is not rendered at all.
-  // { quote: "", name: "", role: "" },
-];
 
 /* ------------------------------- Process ---------------------------------- */
 /* Short version lives on the home page; the full version is on /pricing. */

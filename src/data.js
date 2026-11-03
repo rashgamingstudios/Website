@@ -68,7 +68,7 @@ export const cartbo = {
 /* -------------------------------- Services -------------------------------- */
 /* What clients actually hire us for. Order = how often it's asked for. */
 
-export const services = [
+export const allServices = [
   {
     id: "web-games",
     title: "Web games",
@@ -89,11 +89,11 @@ export const services = [
     color: "var(--color-coral)",
     tagline: "We stay on it until it's approved.",
     desc:
-      "Full CrazyGames SDK integration — rewarded and midgame ads, loading and gameplay events, happytime, invite links, cloud saves. Then we run the submission with you and keep fixing until the game clears basic launch approval.",
+      "Full CrazyGames SDK integration — rewarded and midgame ads, loading and gameplay events, happytime, invite links, cloud saves. Then we run the submission with you and fix whatever review comes back with, up to three rounds.",
     bullets: [
       "SDK wired correctly, not bolted on at the end",
       "QA pass against the CrazyGames review checklist",
-      "Resubmission fixes included until basic launch approval",
+      "Up to 3 resubmission rounds included",
     ],
     from: "$280",
   },
@@ -109,7 +109,7 @@ export const services = [
       "Safe DataStore saves with session locking",
       "Monetization and analytics wired in at build time",
     ],
-    from: "$250",
+    from: "$400",
   },
   {
     id: "prototypes",
@@ -127,6 +127,9 @@ export const services = [
   },
   {
     id: "ai",
+    // Hidden until the replacement copy is written (website brief, item 7).
+    // Flip this to false and the card returns to the grid and the pricing page.
+    hidden: true,
     title: "Game dev with AI",
     color: "var(--color-grape)",
     tagline: "In the pipeline, and in the game.",
@@ -137,9 +140,11 @@ export const services = [
       "LLM-driven dialogue and NPC behaviour",
       "Procedural content and adaptive difficulty systems",
     ],
-    from: "$400",
+    from: "$250",
   },
 ];
+
+export const services = allServices.filter((s) => !s.hidden);
 
 /* ------------------------------- Studio games ------------------------------ */
 /* Our own titles — proof we ship, not a catalogue. */
@@ -177,7 +182,7 @@ export const ownGames = [
 export const proof = [
   { k: "Prototype turnaround", v: "1 day – 1 week", c: "var(--color-sun)" },
   { k: "Platforms we build for", v: "Web · CrazyGames · Roblox", c: "var(--color-blue)" },
-  { k: "Launch support", v: "Until approval", c: "var(--color-mint)" },
+  { k: "Launch support", v: "Through submission", c: "var(--color-mint)" },
 ];
 
 
@@ -238,7 +243,7 @@ export const process = [
     title: "Launch & approval support",
     short: "We stay on it until the game is live.",
     detail:
-      "For CrazyGames we handle submission with you and fix whatever review comes back with, as many rounds as it takes, until the game clears basic launch approval. That support is in the price — not an add-on.",
+      "For CrazyGames we handle submission with you and fix whatever review comes back with — up to three rounds, included in the price rather than billed as an add-on. It is rare to need more than one.",
     color: "var(--color-blue)",
   },
   {

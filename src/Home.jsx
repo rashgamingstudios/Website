@@ -119,7 +119,7 @@ function Cartbo() {
                 className="pulse-dot block h-2.5 w-2.5 rounded-full"
                 style={{ "--game": "var(--color-cartbo-accent)", background: "var(--color-cartbo-accent)" }}
               />
-              <span style={{ color: "var(--color-cartbo-accent)" }}>Our flagship · {cartbo.status}</span>
+              <span style={{ color: "var(--color-cartbo-accent)" }}>Also from us · {cartbo.status}</span>
             </p>
 
             <h2 id="cartbo-heading" className="mt-4 font-display text-5xl font-extrabold tracking-tight sm:text-7xl">
@@ -520,8 +520,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Cartbo />
       <Services />
+      <Cartbo />
       <OwnGames />
       <Process />
       <Team />

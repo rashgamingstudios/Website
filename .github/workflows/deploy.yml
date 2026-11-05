@@ -22,12 +22,18 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Only the repo that actually owns the Pages site can deploy. On a fork,
+    # actions/configure-pages has no Pages site to find and fails, so every
+    # push to a fork would report a red X that means nothing. Skipping keeps
+    # a failure here meaningful. `deploy` needs `build`, so it skips too.
+    if: github.repository == 'rashgamingstudios/Website'
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Node 24: the runner forces 24 anyway and warns that 20 is deprecated.
+          node-version: 24
           cache: npm
 
       - run: npm ci

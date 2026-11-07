@@ -58,6 +58,7 @@ export function Media({
   video = false,
   src,
   poster,
+  hint,
   fit = "cover",
   className = "",
 }) {
@@ -133,20 +134,33 @@ export function Media({
     );
   }
 
+  /* Placeholder. Styled as a picture rather than an empty box, so the layout
+     reads picture-led before the real art exists — and it names the file to
+     drop in, so the page doubles as the shopping list. */
   return (
     <div
       role="img"
-      aria-label={`Placeholder — ${label}`}
-      className={`relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed ${className}`}
+      aria-label={`Image placeholder — ${label}`}
+      className={`relative flex flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border ${className}`}
       style={{
         aspectRatio: ratio,
-        borderColor: mix(40),
-        background: `linear-gradient(135deg, ${mix(12)} 0%, ${mix(4)} 55%, ${mix(8)} 100%)`,
+        borderColor: mix(35),
+        background: `linear-gradient(145deg, ${mix(16)} 0%, ${mix(5)} 55%, ${mix(11)} 100%)`,
       }}
     >
-      {video && (
+      {/* Faint grid so an empty slot still has surface texture. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `linear-gradient(${mix(10)} 1px, transparent 1px), linear-gradient(90deg, ${mix(10)} 1px, transparent 1px)`,
+          backgroundSize: "34px 34px",
+        }}
+      />
+
+      {video ? (
         <span
-          className="flex h-14 w-14 items-center justify-center rounded-full"
+          className="relative flex h-14 w-14 items-center justify-center rounded-full"
           style={{ background: color }}
           aria-hidden="true"
         >
@@ -154,13 +168,34 @@ export function Media({
             <path d="M8 5v14l11-7z" />
           </svg>
         </span>
+      ) : (
+        /* Mountain-and-sun glyph: the universal "a picture goes here". */
+        <svg
+          viewBox="0 0 48 36"
+          className="relative h-9 w-9 sm:h-11 sm:w-11"
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="2" y="3" width="44" height="30" rx="4" opacity="0.55" />
+          <circle cx="15" cy="13" r="3.5" />
+          <path d="M6 28l10.5-11 7.5 8 6-5.5L42 28" />
+        </svg>
       )}
-      <span
-        className="absolute bottom-2.5 left-3 right-3 truncate font-mono text-[11px] leading-snug"
-        style={{ color }}
-      >
-        {video ? "▶ " : "⬚ "}
-        {label}
+
+      <span className="relative px-4 text-center">
+        <span
+          className="block font-mono text-[11px] font-bold uppercase tracking-[0.18em]"
+          style={{ color }}
+        >
+          {label}
+        </span>
+        {hint && (
+          <span className="mt-1 block font-mono text-[10px] leading-snug text-ink-soft">{hint}</span>
+        )}
       </span>
     </div>
   );

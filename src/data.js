@@ -14,6 +14,8 @@ export const STUDIO = {
   // The studio mailbox, as given by the owner. Not hello@rashgamestudios.com —
   // that domain was inferred earlier and never actually had a mailbox on it.
   email: "rashgamingstudios@gmail.com",
+  // Wide banner under the hero. Drop a file at public/hero.jpg and set this.
+  heroArt: null, // "/hero.jpg"
 };
 
 /* --------------------------------- Cartbo --------------------------------- */
@@ -173,6 +175,7 @@ export const allTitles = [
     tech: ["Unity", "C#"],
     platforms: ["Play Store", "Web"],
     art: null, // "/games/racing.jpg"
+    shots: [null, null, null], // "/games/racing-1.jpg", …
     status: "In production",
     link: null,
   },
@@ -186,6 +189,7 @@ export const allTitles = [
     tech: ["Unity", "C#"],
     platforms: ["Play Store", "Web"],
     art: null, // "/games/hunting.jpg"
+    shots: [null, null, null], // "/games/hunting-1.jpg", …
     status: "In production",
     link: null,
   },
@@ -199,6 +203,7 @@ export const allTitles = [
     tech: ["Unity", "C#", "Narrative"],
     platforms: ["PC"],
     art: null, // "/games/hold-on-happy.jpg"
+    shots: [null, null, null],
     status: "The long one",
     link: null,
   },
@@ -215,6 +220,7 @@ export const allTitles = [
     tech: ["Unity", "C#", "Photon Fusion"],
     platforms: ["Web"],
     art: null,
+    shots: [null, null, null],
     status: "In development",
     link: null,
   },

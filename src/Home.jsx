@@ -84,6 +84,17 @@ function Hero() {
             Work with us
           </Link>
         </div>
+
+        {/* The studio's key visual — a wide banner, the way Supergiant opens. */}
+        <Reveal delay={140} className="mt-14">
+          <Media
+            label="Studio key visual"
+            hint="/hero.jpg · 2400×1000 — a wide shot from one of the games, or the three of them together"
+            src={STUDIO.heroArt}
+            ratio="24/10"
+            color="var(--color-blue)"
+          />
+        </Reveal>
       </div>
     </section>
   );
@@ -102,25 +113,32 @@ function TitleBlock({ game, i }) {
       className={`title-block ${i % 2 === 1 ? "is-flipped" : ""}`}
       style={{ "--game": game.color }}
     >
-      {/* Art side. With no key art yet the frame still carries the title's
-          accent and a hatch, so an unannounced game reads as held back. */}
+      {/* Art side: key art, then a three-up strip of screenshots. Empty slots
+          render as labelled placeholders naming the file to drop in. */}
       <div className="title-art relative">
         {/* Kai & Happy perch on the top edge of their own game's frame. */}
         {game.id === "hold-on-happy" && <KaiAndHappy />}
-        {game.art ? (
-          <Media label={`${name} key art`} src={game.art} ratio="16/10" color={game.color} />
-        ) : (
-          <div
-            className="art-pending relative flex aspect-[16/10] items-center justify-center"
-            role="img"
-            aria-label={`${name} — key art not released yet`}
-          >
-            <p className="relative text-center font-mono text-[11px] uppercase tracking-[0.22em]" style={{ color: game.color }}>
-              Key art
-              <span className="mt-1 block text-ink-soft">coming soon</span>
-            </p>
-          </div>
-        )}
+
+        <Media
+          label={`${name} — key art`}
+          hint={`/games/${game.id}.jpg · 1600×1000`}
+          src={game.art}
+          ratio="16/10"
+          color={game.color}
+        />
+
+        <div className="mt-3 grid grid-cols-3 gap-3">
+          {(game.shots ?? []).map((shot, n) => (
+            <Media
+              key={n}
+              label={`Shot ${n + 1}`}
+              hint={`${game.id}-${n + 1}.jpg`}
+              src={shot}
+              ratio="16/9"
+              color={game.color}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Words side — kept to a caption. The reference studios give a game a

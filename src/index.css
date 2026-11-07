@@ -269,33 +269,10 @@ body {
   .title-block.is-flipped {
     grid-template-columns: 1fr 1.55fr;
   }
+  /* .title-art is now purely a layout hook — Media draws its own frame. */
   .title-block.is-flipped > .title-art {
     order: 2;
   }
-}
-
-/* The art frame carries the title's own accent as a soft wash, so an
-   unannounced game with no key art still looks deliberate rather than empty. */
-.title-art {
-  position: relative;
-  border-radius: 1.25rem;
-  overflow: hidden;
-  background:
-    radial-gradient(120% 120% at 20% 10%, color-mix(in srgb, var(--game) 22%, transparent), transparent 60%),
-    color-mix(in srgb, var(--game) 7%, var(--color-surface));
-  border: 1px solid color-mix(in srgb, var(--game) 26%, transparent);
-}
-
-/* Unannounced titles: a quiet diagonal hatch reads as "held back", not broken. */
-.art-pending::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    color-mix(in srgb, var(--game) 8%, transparent) 0 10px,
-    transparent 10px 20px
-  );
 }
 
 /* A hairline rule that fades out — used under section headers. */

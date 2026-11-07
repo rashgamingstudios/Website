@@ -280,3 +280,107 @@ body {
   height: 1px;
   background: linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 22%, transparent), transparent);
 }
+
+/* ===========================================================================
+   Cinematic hero. Every studio site worth copying does the same thing: the
+   first screen IS an image, edge to edge, with the headline sitting on top of
+   it and the nav floating over that. Light page, dark hero — the way Juego
+   and Bethesda do it — so the default light theme still holds below.
+   =========================================================================== */
+
+.hero-cinematic {
+  position: relative;
+  isolation: isolate;
+  min-height: min(90vh, 820px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  color: #fff;
+  background-color: #070b12;
+  background-size: cover;
+  background-position: center;
+}
+
+/* No key art yet: a lit stage rather than a flat panel — two coloured glows
+   and the logo's diagonal, so the slot reads as art direction, not absence. */
+.hero-cinematic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(70% 90% at 18% 15%, color-mix(in srgb, var(--color-blue) 48%, transparent), transparent 62%),
+    radial-gradient(60% 80% at 88% 85%, color-mix(in srgb, var(--color-coral) 34%, transparent), transparent 60%),
+    linear-gradient(160deg, #0d1626 0%, #070b12 55%, #0a0f1a 100%);
+}
+
+/* The slash, scaled up to architecture. */
+.hero-cinematic::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -30%;
+  bottom: -30%;
+  left: 52%;
+  width: 34%;
+  transform: skewX(-18deg);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--color-blue) 26%, transparent) 45%,
+    transparent
+  );
+  filter: blur(2px);
+}
+
+/* With real art in place the glows step back and a scrim keeps text legible. */
+.hero-cinematic.has-art::before {
+  background: linear-gradient(
+    95deg,
+    rgba(5, 8, 14, 0.94) 0%,
+    rgba(5, 8, 14, 0.78) 38%,
+    rgba(5, 8, 14, 0.35) 70%,
+    rgba(5, 8, 14, 0.6) 100%
+  );
+}
+.hero-cinematic.has-art::after {
+  display: none;
+}
+
+/* Grain: the one cheap trick that stops a gradient looking like a gradient. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Nav floating over the hero, turning solid once the hero is behind you. */
+.nav-over {
+  background: linear-gradient(180deg, rgba(5, 8, 14, 0.72), transparent);
+  border-color: transparent !important;
+  backdrop-filter: none;
+}
+.nav-over .nav-link { color: rgba(255, 255, 255, 0.82); }
+.nav-over .nav-link:hover { color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cinematic { min-height: 0; }
+}
+
+/* The toggle and the CTA need inverting while the nav floats on dark art. */
+.nav-over .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+}
+.nav-over .theme-toggle:hover {
+  border-color: #fff;
+  color: #fff;
+}
+.nav-over .nav-cta {
+  background: #ffffff;
+  color: #0b1624;
+}

@@ -35,34 +35,39 @@ function SectionHead({ index, label, title, children, color = "var(--color-blue)
 
 function Hero() {
   const heroRef = useRef(null); // bounds for the drivable car
+  const art = STUDIO.heroArt;
 
   return (
-    <section id="top" ref={heroRef} className="relative overflow-hidden pb-20 pt-16 sm:pb-28 sm:pt-24">
+    <section
+      id="top"
+      ref={heroRef}
+      className={`hero-cinematic grain ${art ? "has-art" : ""}`}
+      style={art ? { backgroundImage: `url(${art})` } : undefined}
+    >
       <HeroToy boundsRef={heroRef} />
 
-      <div className="mx-auto max-w-6xl px-5">
+      <div className="mx-auto w-full max-w-6xl px-5 pb-16 pt-32 sm:pb-24 sm:pt-40">
         <p
-          className="rise font-mono text-xs font-bold uppercase tracking-[0.24em] text-ink-soft"
+          className="rise font-mono text-xs font-bold uppercase tracking-[0.24em] text-white/60"
           style={{ animationDelay: "0ms" }}
         >
-          <span className="text-blue" aria-hidden="true">/</span> Game studio · Hyderabad, India
+          <span className="text-blue" aria-hidden="true">/</span> Independent game studio · India
         </p>
 
-        <h1 className="rise mt-7 max-w-5xl font-display font-extrabold" style={{ animationDelay: "120ms" }}>
+        <h1 className="rise mt-6 max-w-5xl" style={{ animationDelay: "120ms" }}>
           <span className="display-xl block">Two games</span>
           <span className="display-xl block">in production.</span>
-          <span className="display-xl block text-ink-soft">One platform live.</span>
+          <span className="display-xl block text-blue">One platform live.</span>
         </h1>
 
         <p
-          className="rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl"
+          className="rise mt-7 max-w-xl text-lg leading-relaxed text-white/75"
           style={{ animationDelay: "240ms" }}
         >
-          Rash Game Studios is a small studio in Hyderabad building games for the
-          browser and the Play Store — and{" "}
+          We build games for the browser and the Play Store — and{" "}
           <a
             href={cartbo.url}
-            className="font-semibold text-ink underline decoration-2 underline-offset-4"
+            className="font-semibold text-white underline decoration-2 underline-offset-4"
             style={{ textDecorationColor: "var(--color-cartbo-accent)" }}
           >
             Cartbo
@@ -70,32 +75,37 @@ function Hero() {
           , where indie games get played before they're finished.
         </p>
 
-        <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ animationDelay: "360ms" }}>
+        <div className="rise mt-9 flex flex-wrap items-center gap-3" style={{ animationDelay: "360ms" }}>
           <a
             href="#games"
-            className="rounded-full bg-ink px-7 py-3.5 font-bold text-on-ink transition-transform hover:-translate-y-0.5"
+            className="rounded-full bg-blue px-7 py-3.5 font-bold text-on-accent transition-transform hover:-translate-y-0.5"
           >
             See what we're building
           </a>
           <Link
             to="/pricing"
-            className="rounded-full border-2 border-ink/15 bg-surface px-7 py-3.5 font-bold text-ink transition-colors hover:border-blue hover:text-blue"
+            className="rounded-full border-2 border-white/25 px-7 py-3.5 font-bold text-white transition-colors hover:border-white hover:bg-white/10"
           >
             Work with us
           </Link>
         </div>
 
-        {/* The studio's key visual — a wide banner, the way Supergiant opens. */}
-        <Reveal delay={140} className="mt-14">
-          <Media
-            label="Studio key visual"
-            hint="/hero.jpg · 2400×1000 — a wide shot from one of the games, or the three of them together"
-            src={STUDIO.heroArt}
-            ratio="24/10"
-            color="var(--color-blue)"
-          />
-        </Reveal>
+        {/* Says where the art goes without putting a grey box in the hero. */}
+        {!art && (
+          <p className="rise mt-10 font-mono text-[10px] uppercase tracking-[0.2em] text-white/30" style={{ animationDelay: "480ms" }}>
+            Key visual slot · drop 2400×1000 at public/hero.jpg
+          </p>
+        )}
       </div>
+
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-5 flex justify-center text-white/35"
+      >
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </span>
     </section>
   );
 }

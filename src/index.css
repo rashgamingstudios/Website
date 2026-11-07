@@ -337,10 +337,10 @@ body {
 .hero-cinematic.has-art::before {
   background: linear-gradient(
     95deg,
-    rgba(5, 8, 14, 0.94) 0%,
-    rgba(5, 8, 14, 0.78) 38%,
-    rgba(5, 8, 14, 0.35) 70%,
-    rgba(5, 8, 14, 0.6) 100%
+    rgba(5, 8, 14, 0.88) 0%,
+    rgba(5, 8, 14, 0.66) 40%,
+    rgba(5, 8, 14, 0.22) 72%,
+    rgba(5, 8, 14, 0.48) 100%
   );
 }
 .hero-cinematic.has-art::after {
@@ -383,4 +383,12 @@ body {
 .nav-over .nav-cta {
   background: #ffffff;
   color: #0b1624;
+}
+
+/* Hero text sits on photography that will be swapped out, so it carries its
+   own shadow rather than trusting any one image to stay dark where the words
+   are. Cheap insurance against the next key art being brighter. */
+.hero-cinematic h1,
+.hero-cinematic p {
+  text-shadow: 0 2px 20px rgba(3, 6, 12, 0.6), 0 1px 3px rgba(3, 6, 12, 0.45);
 }

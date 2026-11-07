@@ -15,7 +15,7 @@ export const STUDIO = {
   // that domain was inferred earlier and never actually had a mailbox on it.
   email: "rashgamingstudios@gmail.com",
   // Wide banner under the hero. Drop a file at public/hero.jpg and set this.
-  heroArt: null, // "/hero.jpg"
+  heroArt: "/hero.jpg",
 };
 
 /* --------------------------------- Cartbo --------------------------------- */
@@ -181,15 +181,16 @@ export const allTitles = [
   },
   {
     id: "hunting",
-    title: null,
-    placeholder: "Untitled hunting game",
+    title: "Wildkeeper",
+    placeholder: null, // named now
     color: "var(--color-mint)",
-    tagline: "Early, moving fast. Name and first look soon.",
-    desc: "A hunting game for the browser and Play Store, also in Unity.",
+    tagline: "Hunt. Catch. Build your zoo.",
+    desc: "Track animals across forest, swamp, plains and snowfields, catch them with bait, nets and a steady hand — then stock the zoo they end up in.",
     tech: ["Unity", "C#"],
     platforms: ["Play Store", "Web"],
-    art: null, // "/games/hunting.jpg"
-    shots: [null, null, null], // "/games/hunting-1.jpg", …
+    art: "/games/hunting/keyart.jpg",
+    trailer: "/games/hunting/trailer.mp4",
+    shots: ["/games/hunting/shot-1.jpg", "/games/hunting/shot-2.jpg", "/games/hunting/shot-3.jpg"],
     status: "In production",
     link: null,
   },

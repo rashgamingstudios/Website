@@ -57,7 +57,7 @@ function Hero() {
         <h1 className="rise mt-6 max-w-5xl" style={{ animationDelay: "120ms" }}>
           <span className="display-xl block">Two games</span>
           <span className="display-xl block">in production.</span>
-          <span className="display-xl block text-blue">One platform live.</span>
+          <span className="display-xl block text-sun">One platform live.</span>
         </h1>
 
         <p
@@ -129,10 +129,14 @@ function TitleBlock({ game, i }) {
         {/* Kai & Happy perch on the top edge of their own game's frame. */}
         {game.id === "hold-on-happy" && <KaiAndHappy />}
 
+        {/* A title with a trailer plays it right here, with its key art as the
+            poster — click-to-play, so the file costs nothing until asked for. */}
         <Media
-          label={`${name} — key art`}
+          label={game.trailer ? `${name} — trailer` : `${name} — key art`}
           hint={`/games/${game.id}.jpg · 1600×1000`}
-          src={game.art}
+          src={game.trailer ?? game.art}
+          poster={game.trailer ? game.art : undefined}
+          video={Boolean(game.trailer)}
           ratio="16/10"
           color={game.color}
         />

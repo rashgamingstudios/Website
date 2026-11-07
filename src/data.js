@@ -149,18 +149,46 @@ export const services = allServices.filter((s) => !s.hidden);
 /* ------------------------------- Studio games ------------------------------ */
 /* Our own titles — proof we ship, not a catalogue. */
 
-export const ownGames = [
+/*
+ * The slate. These are the studio's own titles and they carry the site now —
+ * with no client work to show, this section is the proof that we ship.
+ *
+ * Two of them are deliberately unnamed. That reads as a tease rather than a
+ * gap, so an unannounced title is a feature of the layout, not a hole in it:
+ * `title: null` renders the `placeholder` instead and shows a "name soon" note.
+ *
+ * To finish a title: set `title`, drop key art at `art`, and delete the
+ * `placeholder`. Nothing else needs touching.
+ */
+export const allTitles = [
   {
-    id: "roast-racers",
-    title: "Roast Racers",
+    id: "racing",
+    title: null,
+    placeholder: "Untitled racing game",
+    // If this turns out to be Roast Racers under a new name, set the title here
+    // and pull its copy across from the hidden entry at the bottom of this list.
     color: "var(--color-coral)",
-    tagline: "Out-drive your friends. Never let them forget it.",
+    tagline: "Name and first look coming soon.",
     desc:
-      "A multiplayer party racer: short races, ridiculous power-ups, and an automatic roast for whoever finishes last. Built in Unity with Photon Fusion — the project where we learned how to make real-time multiplayer behave.",
-    tech: ["Unity", "C#", "Photon Fusion"],
-    // Drop key art at this path and the image area appears on its own.
-    art: null, // "/games/roast-racers.jpg"
-    status: "In development",
+      "A racing game for the browser and Play Store, built in Unity. It's the furthest along of the two and the one we're most impatient to show.",
+    tech: ["Unity", "C#"],
+    platforms: ["Play Store", "Web"],
+    art: null, // "/games/racing.jpg"
+    status: "In production",
+    link: null,
+  },
+  {
+    id: "hunting",
+    title: null,
+    placeholder: "Untitled hunting game",
+    color: "var(--color-mint)",
+    tagline: "Name and first look coming soon.",
+    desc:
+      "A hunting game for the browser and Play Store, also in Unity. Early, but moving quickly — art and a name are close.",
+    tech: ["Unity", "C#"],
+    platforms: ["Play Store", "Web"],
+    art: null, // "/games/hunting.jpg"
+    status: "In production",
     link: null,
   },
   {
@@ -171,11 +199,30 @@ export const ownGames = [
     desc:
       "Our slowest, most personal project — a third-person narrative adventure about the kind of friendship that doesn't need words. It's the reason the studio exists, and it takes exactly as long as it takes.",
     tech: ["Unity", "C#", "Narrative"],
+    platforms: ["PC"],
     art: null, // "/games/hold-on-happy.jpg"
+    status: "The long one",
+    link: null,
+  },
+  {
+    // Kept, not deleted: if the racing game above is this one renamed, move the
+    // copy up and delete this entry. Flip `hidden` to show it as its own title.
+    id: "roast-racers",
+    hidden: true,
+    title: "Roast Racers",
+    color: "var(--color-punch)",
+    tagline: "Out-drive your friends. Never let them forget it.",
+    desc:
+      "A multiplayer party racer: short races, ridiculous power-ups, and an automatic roast for whoever finishes last. Built in Unity with Photon Fusion.",
+    tech: ["Unity", "C#", "Photon Fusion"],
+    platforms: ["Web"],
+    art: null,
     status: "In development",
     link: null,
   },
 ];
+
+export const titles = allTitles.filter((t) => !t.hidden);
 
 /* --------------------------------- Proof ---------------------------------- */
 

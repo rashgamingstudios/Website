@@ -18,11 +18,11 @@ import Pricing from "./Pricing.jsx";
  */
 
 const NAV = [
+  { label: "Games", to: "/#games" },
+  { label: "Cartbo", to: "/#cartbo" },
   { label: "What we build", to: "/#services" },
-  { label: "Our games", to: "/#games" },
   { label: "Process", to: "/#process" },
   { label: "Pricing", to: "/pricing" },
-  { label: "Cartbo", to: "/#cartbo" },
 ];
 
 /* ------------------------------ Scroll manager ----------------------------- */

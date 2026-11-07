@@ -1,27 +1,46 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import {
-  STUDIO,
-  cartbo,
-  channels,
-  ownGames,
-  process,
-  proof,
-  services,
-} from "./data.js";
-import { Media, Reveal, Eyebrow, PlatformChip } from "./ui.jsx";
+import { STUDIO, cartbo, channels, process, proof, services, titles } from "./data.js";
+import { Media, Reveal, PlatformChip } from "./ui.jsx";
 import Team from "./Team.jsx";
 import HeroToy from "./HeroToy.jsx";
 import KaiAndHappy from "./KaiAndHappy.jsx";
+
+/*
+ * The studio leads with its own games now. There is no client work to show, so
+ * the slate is the proof, and the services that pay for it sit underneath
+ * rather than on top. Sections are numbered to give the page a spine.
+ */
+
+/* ------------------------------ Section header ----------------------------- */
+
+function SectionHead({ index, label, title, children, color = "var(--color-blue)", light = false }) {
+  return (
+    <Reveal className="max-w-3xl">
+      <p className="flex items-center gap-3 font-mono text-xs font-bold uppercase">
+        <span className="section-index" style={{ color }}>{index}</span>
+        <span className={light ? "text-white/55" : "text-ink-soft"}>{label}</span>
+      </p>
+      <h2 className="display-lg mt-5 font-display font-extrabold">{title}</h2>
+      {children && (
+        <p className={`mt-4 text-lg leading-relaxed ${light ? "text-white/70" : "text-ink-soft"}`}>
+          {children}
+        </p>
+      )}
+    </Reveal>
+  );
+}
 
 /* ----------------------------------- Hero ----------------------------------- */
 
 function Hero() {
   const heroRef = useRef(null); // bounds for the drivable car
+
   return (
-    <section id="top" ref={heroRef} className="relative overflow-hidden pb-14 pt-14 sm:pb-20 sm:pt-20">
+    <section id="top" ref={heroRef} className="relative overflow-hidden pb-20 pt-16 sm:pb-28 sm:pt-24">
       <HeroToy boundsRef={heroRef} />
-      <div className="mx-auto max-w-6xl px-5 text-center">
+
+      <div className="mx-auto max-w-6xl px-5">
         <p
           className="rise font-mono text-xs font-bold uppercase tracking-[0.24em] text-ink-soft"
           style={{ animationDelay: "0ms" }}
@@ -29,78 +48,145 @@ function Hero() {
           <span className="text-blue" aria-hidden="true">/</span> Game studio · Hyderabad, India
         </p>
 
-        <h1
-          className="rise mx-auto mt-5 max-w-4xl font-display text-[2.3rem] font-extrabold leading-[1.06] tracking-tight sm:text-6xl sm:leading-[1.02] lg:text-7xl"
-          style={{ animationDelay: "120ms" }}
-        >
-          We build the game.{" "}
-          <span className="relative inline-block whitespace-nowrap">
-            <span
-              aria-hidden="true"
-              className="absolute inset-x-[-4%] inset-y-[8%] -skew-x-6 rounded-lg bg-blue"
-            />
-            <span className="relative text-on-accent">You ship it.</span>
-          </span>
+        <h1 className="rise mt-7 max-w-5xl font-display font-extrabold" style={{ animationDelay: "120ms" }}>
+          <span className="display-xl block">Two games</span>
+          <span className="display-xl block">in production.</span>
+          <span className="display-xl block text-ink-soft">One platform live.</span>
         </h1>
 
         <p
-          className="rise mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl"
+          className="rise mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl"
           style={{ animationDelay: "240ms" }}
         >
-          Rash Game Studios makes web games, CrazyGames releases with full SDK
-          integration, Roblox experiences and one-week prototypes — and we stay on a
-          launch until it's approved and live. We also build{" "}
+          Rash Game Studios is a small studio in Hyderabad building games for the
+          browser and the Play Store — and{" "}
           <a
             href={cartbo.url}
-            className="font-semibold text-ink underline decoration-2 underline-offset-2"
+            className="font-semibold text-ink underline decoration-2 underline-offset-4"
             style={{ textDecorationColor: "var(--color-cartbo-accent)" }}
           >
             Cartbo
           </a>
-          , a social platform for indie game developers.
+          , where indie games get played before they're finished.
         </p>
 
-        <div
-          className="rise mt-8 flex flex-wrap items-center justify-center gap-3"
-          style={{ animationDelay: "360ms" }}
-        >
-          <Link
-            to="/pricing"
+        <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ animationDelay: "360ms" }}>
+          <a
+            href="#games"
             className="rounded-full bg-ink px-7 py-3.5 font-bold text-on-ink transition-transform hover:-translate-y-0.5"
           >
-            See pricing &amp; process
-          </Link>
-          <a
-            href={`mailto:${STUDIO.email}`}
+            See what we're building
+          </a>
+          <Link
+            to="/pricing"
             className="rounded-full border-2 border-ink/15 bg-surface px-7 py-3.5 font-bold text-ink transition-colors hover:border-blue hover:text-blue"
           >
-            Start a project
-          </a>
+            Work with us
+          </Link>
         </div>
+      </div>
+    </section>
+  );
+}
 
-        {/* Proof band — only facts we can stand behind. */}
-        <ul className="rise mx-auto mt-14 grid max-w-4xl gap-3 sm:grid-cols-3" style={{ animationDelay: "480ms" }}>
-          {proof.map((fact) => (
-            <li
-              key={fact.k}
-              className="rounded-2xl border-2 border-ink/8 bg-surface p-4 text-left"
-              style={{ borderLeftColor: fact.c, borderLeftWidth: "6px" }}
-            >
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-soft">
-                {fact.k}
-              </p>
-              <p className="mt-1 font-display text-lg font-bold leading-tight">{fact.v}</p>
-            </li>
+/* --------------------------------- The slate -------------------------------- */
+
+function TitleBlock({ game, i }) {
+  const unnamed = !game.title;
+  const name = game.title ?? game.placeholder;
+
+  return (
+    <Reveal
+      as="article"
+      delay={60}
+      className={`title-block ${i % 2 === 1 ? "is-flipped" : ""}`}
+      style={{ "--game": game.color }}
+    >
+      {/* Art side. With no key art yet the frame still carries the title's
+          accent and a hatch, so an unannounced game reads as held back. */}
+      <div className="title-art relative">
+        {/* Kai & Happy perch on the top edge of their own game's frame. */}
+        {game.id === "hold-on-happy" && <KaiAndHappy />}
+        {game.art ? (
+          <Media label={`${name} key art`} src={game.art} ratio="16/10" color={game.color} />
+        ) : (
+          <div
+            className="art-pending relative flex aspect-[16/10] items-center justify-center"
+            role="img"
+            aria-label={`${name} — key art not released yet`}
+          >
+            <p className="relative text-center font-mono text-[11px] uppercase tracking-[0.22em]" style={{ color: game.color }}>
+              Key art
+              <span className="mt-1 block text-ink-soft">coming soon</span>
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Words side. */}
+      <div>
+        <p className="flex flex-wrap items-center gap-2">
+          <span
+            className="rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-on-accent"
+            style={{ background: game.color }}
+          >
+            {game.status}
+          </span>
+          {game.platforms.map((p) => (
+            <PlatformChip key={p}>{p}</PlatformChip>
           ))}
-        </ul>
+        </p>
+
+        <h3 className={`mt-4 font-display text-3xl font-extrabold tracking-tight sm:text-4xl ${unnamed ? "text-ink-soft" : ""}`}>
+          {name}
+        </h3>
+
+        <p className="mt-2 font-display text-lg font-semibold" style={{ color: game.color }}>
+          {game.tagline}
+        </p>
+
+        <p className="mt-4 max-w-xl leading-relaxed text-ink-soft">{game.desc}</p>
+
+        <p className="mt-5 flex flex-wrap gap-1.5">
+          {game.tech.map((t) => (
+            <PlatformChip key={t}>{t}</PlatformChip>
+          ))}
+        </p>
+
+        {game.link && (
+          <a href={game.link} className="mt-5 inline-block font-bold" style={{ color: game.color }}>
+            Follow it →
+          </a>
+        )}
+      </div>
+    </Reveal>
+  );
+}
+
+function Slate() {
+  return (
+    <section id="games" aria-labelledby="games-heading" className="scroll-mt-20 border-t border-ink/8 py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5">
+        <SectionHead index="01" label="The slate" title="What we're making." color="var(--color-coral)">
+          Everything here is ours — our money, our deadlines, our mistakes. Two are
+          far enough along to talk about but not to name yet.
+        </SectionHead>
+
+        <div className="rule-fade mt-10" />
+
+        <div className="mt-14 space-y-20 sm:space-y-28">
+          {titles.map((game, i) => (
+            <TitleBlock key={game.id} game={game} i={i} />
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
 /* --------------------------------- Cartbo ---------------------------------- */
-/* The flagship gets its own deep navy slab lit by a single cool blue, so it
-   reads as a product surface rather than another service card. */
+/* The product gets its own deep navy slab lit by a single cool blue, so it
+   reads as a surface of its own rather than another section of the studio. */
 
 function Cartbo() {
   return (
@@ -110,33 +196,39 @@ function Cartbo() {
       className="scroll-mt-20 text-white"
       style={{ background: "var(--color-cartbo-deep)" }}
     >
-      <div className="mx-auto max-w-6xl px-5 py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
-            <p className="flex items-center gap-2.5 font-mono text-xs font-bold uppercase tracking-[0.22em]">
-              <span
-                aria-hidden="true"
-                className="pulse-dot block h-2.5 w-2.5 rounded-full"
-                style={{ "--game": "var(--color-cartbo-accent)", background: "var(--color-cartbo-accent)" }}
-              />
-              <span style={{ color: "var(--color-cartbo-accent)" }}>Also from us · {cartbo.status}</span>
+            <p className="flex items-center gap-3 font-mono text-xs font-bold uppercase">
+              <span className="section-index" style={{ color: "var(--color-cartbo-accent)" }}>02</span>
+              <span className="flex items-center gap-2 text-white/55">
+                <span
+                  aria-hidden="true"
+                  className="pulse-dot block h-2 w-2 rounded-full"
+                  style={{ "--game": "var(--color-cartbo-accent)", background: "var(--color-cartbo-accent)" }}
+                />
+                Also from us · {cartbo.status}
+              </span>
             </p>
 
-            <h2 id="cartbo-heading" className="mt-4 font-display text-5xl font-extrabold tracking-tight sm:text-7xl">
+            <h2 id="cartbo-heading" className="display-lg mt-5 font-display font-extrabold">
               {cartbo.name}
             </h2>
 
-            <p className="mt-4 max-w-xl font-display text-xl font-semibold leading-snug sm:text-2xl" style={{ color: "var(--color-cartbo-accent)" }}>
+            <p
+              className="mt-4 max-w-xl font-display text-xl font-semibold leading-snug sm:text-2xl"
+              style={{ color: "var(--color-cartbo-accent)" }}
+            >
               {cartbo.tagline}
             </p>
 
-            <p className="mt-4 max-w-xl leading-relaxed text-white/75">{cartbo.pitch}</p>
+            <p className="mt-5 max-w-xl leading-relaxed text-white/75">{cartbo.pitch}</p>
 
             <p className="mt-4 max-w-xl leading-relaxed text-white/75">
               <strong className="font-semibold text-white">The wedge:</strong> {cartbo.wedge}
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href={cartbo.url}
                 className="rounded-full px-7 py-3.5 font-bold text-[color:var(--color-on-cartbo-accent)] transition-transform hover:-translate-y-0.5"
@@ -164,13 +256,9 @@ function Cartbo() {
         </div>
 
         {/* The loop — four steps, the spine of the product. */}
-        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {cartbo.loop.map((step, i) => (
-            <Reveal
-              key={step.n}
-              delay={i * 80}
-              className="rounded-2xl border-2 border-white/12 bg-white/5 p-5"
-            >
+            <Reveal key={step.n} delay={i * 80} className="rounded-2xl border border-white/12 bg-white/5 p-5">
               <span
                 className="flex h-9 w-9 items-center justify-center rounded-full font-display text-base font-extrabold text-[color:var(--color-on-cartbo-accent)]"
                 style={{ background: "var(--color-cartbo-accent)" }}
@@ -185,10 +273,8 @@ function Cartbo() {
         </div>
 
         {/* What's already shipped — the credibility list. */}
-        <Reveal delay={160} className="mt-10 rounded-3xl border-2 border-white/12 bg-white/5 p-6 sm:p-8">
-          <h3 className="font-display text-2xl font-bold">
-            Not a concept — a working product.
-          </h3>
+        <Reveal delay={160} className="mt-8 rounded-3xl border border-white/12 bg-white/5 p-6 sm:p-8">
+          <h3 className="font-display text-2xl font-bold">Not a concept — a working product.</h3>
           <p className="mt-2 max-w-2xl text-white/65">
             {cartbo.one_liner} Deployed on a live domain with real auth and real
             uploads. The full loop works end to end today.
@@ -196,7 +282,11 @@ function Cartbo() {
           <ul className="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
             {cartbo.built.map((item) => (
               <li key={item} className="flex gap-3 text-sm leading-relaxed text-white/80">
-                <span aria-hidden="true" className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--color-cartbo-accent)" }} />
+                <span
+                  aria-hidden="true"
+                  className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ background: "var(--color-cartbo-accent)" }}
+                />
                 {item}
               </li>
             ))}
@@ -208,187 +298,74 @@ function Cartbo() {
 }
 
 /* -------------------------------- Services --------------------------------- */
-
-function ServiceCard({ service, delay }) {
-  return (
-    <Reveal
-      as="article"
-      delay={delay}
-      className="game-card relative flex flex-col rounded-3xl border-2 border-ink/10 bg-surface p-6"
-      style={{ "--game": service.color }}
-    >
-      <span className="slash-shine" aria-hidden="true" />
-      <p className="flex items-start justify-between gap-3">
-        <span className="font-display text-2xl font-bold leading-tight">{service.title}</span>
-        <span
-          className="shrink-0 rounded-full px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-on-accent"
-          style={{ background: service.color }}
-        >
-          from {service.from}
-        </span>
-      </p>
-      <p className="mt-2 font-display text-base font-semibold" style={{ color: service.color }}>
-        {service.tagline}
-      </p>
-      <p className="mt-3 text-sm leading-relaxed text-ink-soft">{service.desc}</p>
-      <ul className="mt-5 space-y-2">
-        {service.bullets.map((b) => (
-          <li key={b} className="flex gap-2.5 text-sm leading-relaxed text-ink-soft">
-            <span
-              aria-hidden="true"
-              className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{ background: service.color }}
-            />
-            {b}
-          </li>
-        ))}
-      </ul>
-      <Link
-        to={`/pricing#${service.id}`}
-        className="mt-auto pt-5 text-sm font-bold transition-colors"
-        style={{ color: service.color }}
-      >
-        See what it costs →
-      </Link>
-    </Reveal>
-  );
-}
+/* Demoted from the headline act to a dense, scannable list — the games carry
+   the page now, and anyone here for hire-us is already looking for it. */
 
 function Services() {
   return (
-    <section id="services" aria-labelledby="services-heading" className="scroll-mt-20 py-16 sm:py-24">
+    <section id="services" aria-labelledby="services-heading" className="scroll-mt-20 py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
-        <Reveal className="max-w-2xl">
-          <Eyebrow>What we build</Eyebrow>
-          <h2 id="services-heading" className="mt-4 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Five things, done properly.
-          </h2>
-          <p className="mt-3 leading-relaxed text-ink-soft">
-            We don't do everything. We do browser games and the platforms they live
-            on — which is why we know those platforms' review checklists by heart.
-          </p>
-        </Reveal>
+        <SectionHead index="03" label="What we build for clients" title="We also build yours.">
+          The same pipeline, pointed at your game instead of ours. Browser games and
+          the platforms they live on — which is why we know those review checklists
+          by heart.
+        </SectionHead>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, i) => (
-            <ServiceCard key={service.id} service={service} delay={i * 70} />
-          ))}
+        <div className="rule-fade mt-10" />
 
-          {/* Pricing invitation sits in the grid as the sixth tile. */}
-          <Reveal
-            delay={services.length * 70}
-            className="flex min-h-64 flex-col items-center justify-center rounded-3xl border-2 border-dashed border-blue/40 bg-blue/5 p-6 text-center"
-          >
-            <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-blue">
-              No guessing
-            </p>
-            <p className="mt-3 font-display text-2xl font-bold leading-tight">
-              Every tier, every number, in the open.
-            </p>
-            <p className="mt-2 max-w-60 text-sm text-ink-soft">
-              Estimated ranges for all five services, plus the full process and what's
-              always included.
-            </p>
-            <Link
-              to="/pricing"
-              className="mt-5 rounded-full bg-blue px-6 py-3 font-bold text-on-accent transition-transform hover:-translate-y-0.5"
-            >
-              Open pricing
-            </Link>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------- Our own games ------------------------------ */
-
-function OwnGames() {
-  return (
-    <section
-      id="games"
-      aria-labelledby="games-heading"
-      className="scroll-mt-20 border-y border-ink/8 bg-surface py-16 sm:py-24"
-    >
-      <div className="mx-auto max-w-6xl px-5">
-        <Reveal className="max-w-2xl">
-          <Eyebrow color="var(--color-coral)">Our own games</Eyebrow>
-          <h2 id="games-heading" className="mt-4 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-            We ship for ourselves too.
-          </h2>
-          <p className="mt-3 leading-relaxed text-ink-soft">
-            Two projects we're building with our own money and our own deadlines.
-            They're where we break things first, so client work doesn't have to be the
-            experiment.
-          </p>
-        </Reveal>
-
-        {/* Stacked, the second card needs room above it: Kai & Happy perch on
-            its top edge and would otherwise sit on the card above. */}
-        <div className="mt-10 grid gap-x-6 gap-y-24 lg:grid-cols-2 lg:gap-6">
-          {ownGames.map((game, i) => (
-            <Reveal
-              key={game.id}
-              as="article"
-              delay={i * 100}
-              className="game-card relative flex flex-col rounded-3xl border-2 border-ink/10 bg-base p-5"
-              style={{ "--game": game.color }}
-            >
-              {/* Kai & Happy idle on the top edge of their own card only. */}
-              {game.id === "hold-on-happy" && <KaiAndHappy />}
-              {/* No empty frame: the image area only exists once there is art. */}
-              {game.art && (
-                <Media label={`${game.title} key art`} src={game.art} ratio="16/10" color={game.color} />
-              )}
-              <span className="slash-shine" aria-hidden="true" />
-              <div className="flex flex-1 flex-col px-1 pt-5">
-                <p className="flex items-center justify-between gap-2">
-                  <span className="font-display text-2xl font-bold">{game.title}</span>
-                  <span
-                    className="shrink-0 rounded-full px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-on-accent"
-                    style={{ background: game.color }}
-                  >
-                    {game.status}
-                  </span>
-                </p>
-                <p className="mt-1.5 font-display text-base font-semibold" style={{ color: game.color }}>
-                  {game.tagline}
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-ink-soft">{game.desc}</p>
-                <div className="mt-auto flex items-center justify-between gap-3 pt-5">
-                  <span className="flex flex-wrap gap-1.5">
-                    {game.tech.map((t) => (
-                      <PlatformChip key={t}>{t}</PlatformChip>
-                    ))}
-                  </span>
-                  {/* No link until there is somewhere real to send people. */}
-                  {game.link && (
-                    <a href={game.link} className="shrink-0 text-sm font-bold" style={{ color: game.color }}>
-                      Follow it →
-                    </a>
-                  )}
-                </div>
-              </div>
+        <ul className="mt-10 grid gap-px overflow-hidden rounded-3xl border border-ink/10 bg-ink/10 sm:grid-cols-2">
+          {services.map((service) => (
+            <Reveal as="li" key={service.id} className="bg-base p-7">
+              <p className="flex items-baseline justify-between gap-3">
+                <span className="font-display text-2xl font-bold leading-tight">{service.title}</span>
+                <span className="shrink-0 font-mono text-xs font-bold" style={{ color: service.color }}>
+                  from {service.from}
+                </span>
+              </p>
+              <p className="mt-2 font-display text-base font-semibold" style={{ color: service.color }}>
+                {service.tagline}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-ink-soft">{service.desc}</p>
+              <Link
+                to={`/pricing#${service.id}`}
+                className="mt-4 inline-block text-sm font-bold"
+                style={{ color: service.color }}
+              >
+                See what it costs →
+              </Link>
             </Reveal>
           ))}
-        </div>
+        </ul>
 
-        {/* Was the arcade; now it routes to Cartbo, which is where our builds
-            — and everybody else's — are actually playable. */}
-        <Reveal className="mt-8 flex flex-col items-center justify-between gap-4 rounded-3xl bg-blue px-6 py-6 text-center sm:flex-row sm:px-8 sm:text-left">
+        {/* The facts that belong to the service offer, not the studio's games. */}
+        <Reveal delay={120} className="mt-6 grid gap-3 sm:grid-cols-3">
+          {proof.map((fact) => (
+            <div
+              key={fact.k}
+              className="rounded-2xl border border-ink/10 bg-surface p-5"
+              style={{ borderLeftColor: fact.c, borderLeftWidth: "5px" }}
+            >
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-soft">
+                {fact.k}
+              </p>
+              <p className="mt-1 font-display text-lg font-bold leading-tight">{fact.v}</p>
+            </div>
+          ))}
+        </Reveal>
+
+        <Reveal delay={160} className="mt-6 flex flex-col items-start justify-between gap-4 rounded-3xl bg-blue px-7 py-7 sm:flex-row sm:items-center">
           <p className="font-display text-xl font-bold text-on-accent sm:text-2xl">
-            Want to see how our web builds actually feel?
+            Every tier and every number, in the open.
             <span className="mt-1 block font-body text-sm font-semibold opacity-80">
-              Play them on Cartbo — in the browser, no install, no signup.
+              Most studios make you book a call to find out if you can afford them.
             </span>
           </p>
-          <a
-            href={cartbo.url}
+          <Link
+            to="/pricing"
             className="shrink-0 rounded-full bg-surface px-6 py-3 font-bold text-blue transition-transform hover:-translate-y-0.5"
           >
-            Play on Cartbo ↗
-          </a>
+            Open pricing
+          </Link>
         </Reveal>
       </div>
     </section>
@@ -399,36 +376,32 @@ function OwnGames() {
 
 function Process() {
   return (
-    <section id="process" aria-labelledby="process-heading" className="scroll-mt-20 py-16 sm:py-24">
+    <section
+      id="process"
+      aria-labelledby="process-heading"
+      className="scroll-mt-20 border-y border-ink/8 bg-surface py-20 sm:py-28"
+    >
       <div className="mx-auto max-w-6xl px-5">
-        <Reveal className="flex flex-wrap items-end justify-between gap-6">
-          <div className="max-w-2xl">
-            <Eyebrow color="var(--color-mint)">How we work</Eyebrow>
-            <h2 id="process-heading" className="mt-4 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Eight steps. No surprises.
-            </h2>
-            <p className="mt-3 leading-relaxed text-ink-soft">
-              From the first message to two weeks after launch. Every stage is written
-              down before you pay anything.
-            </p>
-          </div>
-          <Link
-            to="/pricing#process"
-            className="rounded-full border-2 border-ink/15 bg-surface px-6 py-3 font-bold text-ink transition-colors hover:border-mint hover:text-mint"
-          >
-            Read the full process →
-          </Link>
-        </Reveal>
-
-        <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {process.map((step, i) => (
-            <Reveal
-              as="li"
-              key={step.n}
-              delay={(i % 4) * 70}
-              className="rounded-2xl border-2 border-ink/8 bg-surface p-5"
-              style={{ borderTopColor: step.color, borderTopWidth: "6px" }}
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <SectionHead index="04" label="How we work" title="Eight steps. No surprises." color="var(--color-mint)">
+            From the first message to two weeks after launch. Every stage is written
+            down before you pay anything.
+          </SectionHead>
+          <Reveal>
+            <Link
+              to="/pricing#process"
+              className="rounded-full border-2 border-ink/15 bg-base px-6 py-3 font-bold text-ink transition-colors hover:border-mint hover:text-mint"
             >
+              Read the full process →
+            </Link>
+          </Reveal>
+        </div>
+
+        <div className="rule-fade mt-10" />
+
+        <ol className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+          {process.map((step, i) => (
+            <Reveal as="li" key={step.n} delay={(i % 4) * 60}>
               <p className="font-mono text-xs font-bold tracking-[0.18em]" style={{ color: step.color }}>
                 {step.n}
               </p>
@@ -446,21 +419,24 @@ function Process() {
 
 function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-20 bg-deep py-16 text-white sm:py-24">
+    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-20 bg-deep py-20 text-white sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
           <Reveal>
-            <Eyebrow className="[&>span:last-child]:text-white/60">Start a project</Eyebrow>
-            <h2 id="contact-heading" className="mt-4 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
+            <p className="flex items-center gap-3 font-mono text-xs font-bold uppercase">
+              <span className="section-index text-blue">06</span>
+              <span className="text-white/55">Start a project</span>
+            </p>
+            <h2 id="contact-heading" className="display-lg mt-5 font-display font-extrabold">
               Tell us what you want to make.
             </h2>
-            <p className="mt-3 max-w-xl leading-relaxed text-white/70">
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/70">
               A paragraph is enough. An idea, a reference game, a half-finished
               project, a deadline you're worried about — send whatever you actually
               have. You'll get a real reply from the person who'd be building it,
               usually the same day.
             </p>
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href={`mailto:${STUDIO.email}`}
                 className="rounded-full bg-blue px-7 py-3.5 font-bold text-on-accent transition-transform hover:-translate-y-0.5"
@@ -486,7 +462,7 @@ function Contact() {
                   as="a"
                   href={ch.link}
                   delay={i * 70}
-                  className="game-card group flex flex-col rounded-2xl border-2 border-white/12 bg-white/5 p-5"
+                  className="game-card group flex flex-col rounded-2xl border border-white/12 bg-white/5 p-5"
                   style={{ "--game": ch.color === "#101828" ? "#5b6b8c" : ch.color }}
                 >
                   <span
@@ -520,9 +496,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Services />
-      <OwnGames />
+      <Slate />
       <Cartbo />
+      <Services />
       <Process />
       <Team />
       <Contact />

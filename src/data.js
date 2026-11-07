@@ -11,10 +11,9 @@
 export const BLUE = "var(--color-blue)";
 
 export const STUDIO = {
-  // rashgamesstudios.com (two 's') does not resolve — the old site's contact
-  // address was on a domain that was never registered. This matches the CNAME,
-  // which is the domain that actually serves the site.
-  email: "hello@rashgamestudios.com",
+  // The studio mailbox, as given by the owner. Not hello@rashgamestudios.com —
+  // that domain was inferred earlier and never actually had a mailbox on it.
+  email: "rashgamingstudios@gmail.com",
 };
 
 /* --------------------------------- Cartbo --------------------------------- */
@@ -168,7 +167,7 @@ export const allTitles = [
     // If this turns out to be Roast Racers under a new name, set the title here
     // and pull its copy across from the hidden entry at the bottom of this list.
     color: "var(--color-coral)",
-    tagline: "Name and first look coming soon.",
+    tagline: "The furthest along. Name and first look soon.",
     desc:
       "A racing game for the browser and Play Store, built in Unity. It's the furthest along of the two and the one we're most impatient to show.",
     tech: ["Unity", "C#"],
@@ -182,9 +181,8 @@ export const allTitles = [
     title: null,
     placeholder: "Untitled hunting game",
     color: "var(--color-mint)",
-    tagline: "Name and first look coming soon.",
-    desc:
-      "A hunting game for the browser and Play Store, also in Unity. Early, but moving quickly — art and a name are close.",
+    tagline: "Early, moving fast. Name and first look soon.",
+    desc: "A hunting game for the browser and Play Store, also in Unity.",
     tech: ["Unity", "C#"],
     platforms: ["Play Store", "Web"],
     art: null, // "/games/hunting.jpg"

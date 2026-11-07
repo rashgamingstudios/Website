@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap");
 @import "tailwindcss";
 
 /*
@@ -30,9 +30,10 @@
   --color-cartbo-deep: #0e1b2e; /* the slab */
   --color-cartbo-accent: #5fa8e6; /* headings, dots, fills on that slab */
   --color-on-cartbo-accent: #0b1626; /* text sitting on an accent fill */
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-poster: "Anton", "Archivo", sans-serif;
 }
 
 :root {
@@ -231,14 +232,18 @@ body {
 /* Fluid display sizes. clamp() means no breakpoint jumps between phone and
    desktop, and the hero stays proportional on every width in between. */
 .display-xl {
+  font-family: var(--font-poster);
+  font-weight: 400;
   font-size: clamp(2.6rem, 9vw, 6.5rem);
   line-height: 0.98;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.015em;
 }
 .display-lg {
+  font-family: var(--font-poster);
+  font-weight: 400;
   font-size: clamp(2rem, 5.2vw, 3.6rem);
   line-height: 1.04;
-  letter-spacing: -0.028em;
+  letter-spacing: -0.012em;
 }
 
 /* Section numbers (01 / 02 / 03) give the page a spine to read down. */
@@ -256,13 +261,13 @@ body {
 }
 @media (min-width: 1024px) {
   .title-block {
-    grid-template-columns: 1.15fr 1fr;
-    gap: 3.5rem;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 4rem;
   }
   /* Flipping moves the art to the second column, so the column widths swap
      with it — otherwise the art would shrink on every other row. */
   .title-block.is-flipped {
-    grid-template-columns: 1fr 1.15fr;
+    grid-template-columns: 1fr 1.55fr;
   }
   .title-block.is-flipped > .title-art {
     order: 2;

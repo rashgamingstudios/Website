@@ -123,7 +123,8 @@ function TitleBlock({ game, i }) {
         )}
       </div>
 
-      {/* Words side. */}
+      {/* Words side — kept to a caption. The reference studios give a game a
+          title, one line and a badge, and let the art do the rest. */}
       <div>
         <p className="flex flex-wrap items-center gap-2">
           <span
@@ -137,24 +138,14 @@ function TitleBlock({ game, i }) {
           ))}
         </p>
 
-        <h3 className={`mt-4 font-display text-3xl font-extrabold tracking-tight sm:text-4xl ${unnamed ? "text-ink-soft" : ""}`}>
-          {name}
-        </h3>
+        <h3 className={`display-lg mt-5 ${unnamed ? "text-ink-soft" : ""}`}>{name}</h3>
 
-        <p className="mt-2 font-display text-lg font-semibold" style={{ color: game.color }}>
+        <p className="mt-4 max-w-sm text-lg leading-snug" style={{ color: game.color }}>
           {game.tagline}
         </p>
 
-        <p className="mt-4 max-w-xl leading-relaxed text-ink-soft">{game.desc}</p>
-
-        <p className="mt-5 flex flex-wrap gap-1.5">
-          {game.tech.map((t) => (
-            <PlatformChip key={t}>{t}</PlatformChip>
-          ))}
-        </p>
-
         {game.link && (
-          <a href={game.link} className="mt-5 inline-block font-bold" style={{ color: game.color }}>
+          <a href={game.link} className="mt-6 inline-block font-bold" style={{ color: game.color }}>
             Follow it →
           </a>
         )}
@@ -224,10 +215,6 @@ function Cartbo() {
 
             <p className="mt-5 max-w-xl leading-relaxed text-white/75">{cartbo.pitch}</p>
 
-            <p className="mt-4 max-w-xl leading-relaxed text-white/75">
-              <strong className="font-semibold text-white">The wedge:</strong> {cartbo.wedge}
-            </p>
-
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href={cartbo.url}
@@ -250,7 +237,7 @@ function Cartbo() {
               video
               src="/cartbo/promo.mp4"
               poster="/cartbo/promo-poster.jpg"
-              className="mx-auto max-w-[300px]"
+              className="mx-auto max-w-[400px]"
             />
           </Reveal>
         </div>
@@ -276,8 +263,7 @@ function Cartbo() {
         <Reveal delay={160} className="mt-8 rounded-3xl border border-white/12 bg-white/5 p-6 sm:p-8">
           <h3 className="font-display text-2xl font-bold">Not a concept — a working product.</h3>
           <p className="mt-2 max-w-2xl text-white/65">
-            {cartbo.one_liner} Deployed on a live domain with real auth and real
-            uploads. The full loop works end to end today.
+            {cartbo.one_liner} Live, with real auth and real uploads.
           </p>
           <ul className="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
             {cartbo.built.map((item) => (

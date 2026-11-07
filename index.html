@@ -41,13 +41,14 @@
     <meta name="theme-color" content="#0b1624" />
 
     <script>
-      // Set theme before first paint so there's no flash. Saved choice wins, then OS preference.
-      // Same key and attribute as the arcade site, so the toggle behaves identically on both.
+      // Set theme before first paint so there's no flash. Light is the default;
+      // a visitor who flips the toggle gets their choice remembered.
       ;(function () {
         try {
+          // Light is the default. Only a choice the visitor made here is
+          // honoured; the OS preference no longer decides.
           var t = localStorage.getItem('rash-theme')
-          if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-          document.documentElement.dataset.theme = t
+          document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light'
         } catch (e) {}
       })()
     </script>

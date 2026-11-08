@@ -15,7 +15,9 @@ export const STUDIO = {
   // that domain was inferred earlier and never actually had a mailbox on it.
   email: "rashgamingstudios@gmail.com",
   // Wide banner under the hero. Drop a file at public/hero.jpg and set this.
-  heroArt: "/hero.jpg",
+  // The hero is sliced diagonally between the two games, echoing the slash
+  // in the logo. Order is left slice, right slice.
+  heroSlices: ["/hero-racing.jpg", "/hero-zoo.jpg"],
 };
 
 /* --------------------------------- Cartbo --------------------------------- */
@@ -164,18 +166,19 @@ export const services = allServices.filter((s) => !s.hidden);
 export const allTitles = [
   {
     id: "racing",
-    title: null,
-    placeholder: "Untitled racing game",
-    // If this turns out to be Roast Racers under a new name, set the title here
-    // and pull its copy across from the hidden entry at the bottom of this list.
+    title: "Roast Racers",
     color: "var(--color-coral)",
-    tagline: "The furthest along. Name and first look soon.",
+    // Footage is semi-realistic: wet asphalt, real cars, autumn highways —
+    // not the cartoon party racer the old blurb implied. Copy follows the
+    // footage, and keeps the roast, which is a real planned feature.
+    tagline: "Out-drive your friends. Never let them forget it.",
     desc:
-      "A racing game for the browser and Play Store, built in Unity. It's the furthest along of the two and the one we're most impatient to show.",
-    tech: ["Unity", "C#"],
+      "A multiplayer racer built in Unity with Photon Fusion — real handling, weather that turns on you, and a roast waiting for whoever finishes last.",
+    tech: ["Unity", "C#", "Photon Fusion"],
     platforms: ["Play Store", "Web"],
-    art: null, // "/games/racing.jpg"
-    shots: [null, null, null], // "/games/racing-1.jpg", …
+    art: "/games/racing/keyart.jpg",
+    trailer: "/games/racing/trailer.mp4",
+    shots: ["/games/racing/shot-1.jpg", "/games/racing/shot-2.jpg", "/games/racing/shot-3.jpg"],
     status: "In production",
     link: null,
   },
@@ -206,23 +209,6 @@ export const allTitles = [
     art: null, // "/games/hold-on-happy.jpg"
     shots: [null, null, null],
     status: "The long one",
-    link: null,
-  },
-  {
-    // Kept, not deleted: if the racing game above is this one renamed, move the
-    // copy up and delete this entry. Flip `hidden` to show it as its own title.
-    id: "roast-racers",
-    hidden: true,
-    title: "Roast Racers",
-    color: "var(--color-punch)",
-    tagline: "Out-drive your friends. Never let them forget it.",
-    desc:
-      "A multiplayer party racer: short races, ridiculous power-ups, and an automatic roast for whoever finishes last. Built in Unity with Photon Fusion.",
-    tech: ["Unity", "C#", "Photon Fusion"],
-    platforms: ["Web"],
-    art: null,
-    shots: [null, null, null],
-    status: "In development",
     link: null,
   },
 ];

@@ -35,15 +35,26 @@ function SectionHead({ index, label, title, children, color = "var(--color-blue)
 
 function Hero() {
   const heroRef = useRef(null); // bounds for the drivable car
-  const art = STUDIO.heroArt;
+  const slices = STUDIO.heroSlices ?? [];
+  const art = slices.length > 0;
 
   return (
     <section
       id="top"
       ref={heroRef}
       className={`hero-cinematic grain ${art ? "has-art" : ""}`}
-      style={art ? { backgroundImage: `url(${art})` } : undefined}
     >
+      {/* Both games on one screen, cut on the logo's diagonal. */}
+      {art && (
+        <div className="hero-slices" aria-hidden="true">
+          <span className="hero-slice hero-slice-a" style={{ backgroundImage: `url(${slices[0]})` }} />
+          {slices[1] && (
+            <span className="hero-slice hero-slice-b" style={{ backgroundImage: `url(${slices[1]})` }} />
+          )}
+          {slices[1] && <span className="hero-seam" />}
+        </div>
+      )}
+
       <HeroToy boundsRef={heroRef} />
 
       <div className="mx-auto w-full max-w-6xl px-5 pb-16 pt-32 sm:pb-24 sm:pt-40">

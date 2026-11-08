@@ -17,7 +17,8 @@ export const STUDIO = {
   // Wide banner under the hero. Drop a file at public/hero.jpg and set this.
   // The hero is sliced diagonally between the two games, echoing the slash
   // in the logo. Order is left slice, right slice.
-  heroSlices: ["/hero-racing.jpg", "/hero-zoo.jpg"],
+  // One path fills the hero. Add a second and it splits on the diagonal.
+  heroSlices: ["/hero-racing.jpg"],
 };
 
 /* --------------------------------- Cartbo --------------------------------- */

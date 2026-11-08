@@ -44,14 +44,20 @@ function Hero() {
       ref={heroRef}
       className={`hero-cinematic grain ${art ? "has-art" : ""}`}
     >
-      {/* Both games on one screen, cut on the logo's diagonal. */}
+      {/* One image fills the frame; two get cut on the logo's diagonal with a
+          lit seam between them. Add a second path to heroSlices to split it. */}
       {art && (
         <div className="hero-slices" aria-hidden="true">
-          <span className="hero-slice hero-slice-a" style={{ backgroundImage: `url(${slices[0]})` }} />
+          <span
+            className={`hero-slice ${slices[1] ? "hero-slice-a" : ""}`}
+            style={{ backgroundImage: `url(${slices[0]})` }}
+          />
           {slices[1] && (
-            <span className="hero-slice hero-slice-b" style={{ backgroundImage: `url(${slices[1]})` }} />
+            <>
+              <span className="hero-slice hero-slice-b" style={{ backgroundImage: `url(${slices[1]})` }} />
+              <span className="hero-seam" />
+            </>
           )}
-          {slices[1] && <span className="hero-seam" />}
         </div>
       )}
 

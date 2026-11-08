@@ -335,24 +335,19 @@ body {
 
 /* With real art in place the glows step back and a scrim keeps text legible. */
 .hero-cinematic.has-art::before {
-  /* Two layers: a soft plate anchored under the copy block, and a gentler
-     wash across the whole frame. Measured against the racing slice, a single
-     horizontal wash left the body text at 2.25:1 — the plate fixes that
-     without flattening the art on the right. */
+  /* A plate that stays strong across the whole copy column rather than
+     falling off radially — the headline runs to ~55% width and the amber
+     line was measuring 2.02:1 past the plate edge. */
   background:
-    radial-gradient(
-      95% 105% at 0% 72%,
-      rgba(4, 7, 12, 0.94) 0%,
-      rgba(4, 7, 12, 0.8) 40%,
-      transparent 74%
-    ),
     linear-gradient(
-      95deg,
-      rgba(5, 8, 14, 0.82) 0%,
-      rgba(5, 8, 14, 0.52) 45%,
-      rgba(5, 8, 14, 0.16) 74%,
-      rgba(5, 8, 14, 0.46) 100%
-    );
+      100deg,
+      rgba(4, 7, 12, 0.88) 0%,
+      rgba(4, 7, 12, 0.82) 38%,
+      rgba(4, 7, 12, 0.66) 58%,
+      rgba(4, 7, 12, 0.12) 80%,
+      rgba(4, 7, 12, 0.32) 100%
+    ),
+    linear-gradient(180deg, rgba(4, 7, 12, 0.25) 0%, transparent 38%, rgba(4, 7, 12, 0.28) 100%);
 }
 .hero-cinematic.has-art::after {
   display: none;
@@ -413,7 +408,9 @@ body {
 .hero-slices {
   position: absolute;
   inset: 0;
-  z-index: -2;
+  /* Below the scrim. Same z-index as ::before meant the art painted over it,
+     because tree order decides between equal z-indexes and ::before is first. */
+  z-index: -3;
 }
 .hero-slice {
   position: absolute;
@@ -459,10 +456,10 @@ body {
   .hero-cinematic.has-art::before {
     background: linear-gradient(
       180deg,
-      rgba(4, 7, 12, 0.42) 0%,
-      rgba(4, 7, 12, 0.62) 24%,
-      rgba(4, 7, 12, 0.88) 46%,
-      rgba(4, 7, 12, 0.93) 100%
+      rgba(4, 7, 12, 0.2) 0%,
+      rgba(4, 7, 12, 0.4) 26%,
+      rgba(4, 7, 12, 0.7) 48%,
+      rgba(4, 7, 12, 0.84) 100%
     );
   }
 }

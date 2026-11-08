@@ -234,9 +234,11 @@ body {
 .display-xl {
   font-family: var(--font-poster);
   font-weight: 700;
-  /* Teko sits shorter per em than Anton did, so the scale goes up ~30% to
-     keep the same optical weight, and tracking returns to neutral — a
-     condensed face does not want negative letter-spacing. */
+  /* Teko needs more size per em than a wide face, but at weight 700 it is
+     already heavy: a full 1.3x bump ran the third line out to 80% of the
+     hero, past the copy plate, and the amber measured 1.07:1 there. 7rem
+     keeps it at 67%. Tracking is neutral — a condensed face does not want
+     negative letter-spacing. */
   font-size: clamp(2.9rem, 9.4vw, 7rem);
   line-height: 0.9;
   letter-spacing: 0;

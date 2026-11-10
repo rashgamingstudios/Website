@@ -29,7 +29,7 @@ export default defineConfig({
   // Honor an externally assigned port (e.g. the preview harness's PORT env
   // var) so multiple dev servers can coexist; falls back to Vite's default.
   server: {
-    port: Number(process.env.PORT) || 5173,
+    port: Number(process.env.PORT) || 5174,
     strictPort: Boolean(process.env.PORT),
   },
 });

@@ -8,7 +8,7 @@
  * no layout changes.
  */
 
-export const tiers = [
+export const allTiers = [
   {
     id: "prototypes",
     title: "Prototypes",
@@ -92,7 +92,7 @@ export const tiers = [
     title: "CrazyGames + SDK",
     color: "var(--color-coral)",
     blurb:
-      "SDK integration and submission support. Approval fixes are included in every row — we don't bill you for a review round.",
+      "SDK integration and submission support. Every row includes up to 3 resubmission rounds — we don't bill you for a review round.",
     rows: [
       {
         name: "SDK integration on your existing game",
@@ -101,7 +101,7 @@ export const tiers = [
         includes: [
           "Rewarded + midgame ads, loading and gameplay events, happytime",
           "Cloud saves, invite links, user account hooks",
-          "QA against the review checklist, then submission support until basic launch approval",
+          "QA against the review checklist, then submission support with up to 3 resubmission rounds",
         ],
       },
       {
@@ -167,6 +167,7 @@ export const tiers = [
   },
   {
     id: "ai",
+    hidden: true, // mirrors the hidden service card (website brief, item 7)
     title: "Game dev with AI",
     color: "var(--color-grape)",
     blurb:
@@ -206,6 +207,8 @@ export const tiers = [
   },
 ];
 
+export const tiers = allTiers.filter((t) => !t.hidden);
+
 export const addOns = [
   { name: "Mobile controls retrofit", price: "$150 – $380" },
   { name: "Extra portal port (itch, Poki, GameDistribution, Y8)", price: "$180 – $500 each" },
@@ -241,7 +244,7 @@ export const faq = [
   },
   {
     q: "What happens if CrazyGames rejects the build?",
-    a: "We fix it and resubmit, as many rounds as it takes, until the game clears basic launch approval. That's included in every CrazyGames tier. We've read the review checklist enough times to design against it from day one, which is why it rarely comes up.",
+    a: "We fix it and resubmit. Up to three rounds are included in every CrazyGames tier at no extra cost. We've read the review checklist enough times to design against it from day one, so it is rare to need more than one.",
   },
   {
     q: "Who owns the game?",

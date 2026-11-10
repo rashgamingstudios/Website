@@ -2,11 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "rash-site",
+      "// note": "Named 'rash-website', not 'rash-site': the abandoned copy at Desktop/rash-game-studios also declared 'rash-site' on port 5173, and the preview tooling kept starting that one instead of this repo. Distinct name, distinct port.",
+      "name": "rash-website",
       "runtimeExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
       "runtimeArgs": ["run", "dev"],
       "cwd": "C:\\Users\\ysair\\OneDrive\\Desktop\\RashGameStudioWebsite\\Website",
-      "port": 5173
+      "port": 5174
     }
   ]
 }

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap");
 @import "tailwindcss";
 
 /*
@@ -30,9 +30,10 @@
   --color-cartbo-deep: #0e1b2e; /* the slab */
   --color-cartbo-accent: #5fa8e6; /* headings, dots, fills on that slab */
   --color-on-cartbo-accent: #0b1626; /* text sitting on an accent fill */
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-poster: "Teko", "Inter", sans-serif;
 }
 
 :root {
@@ -220,5 +221,250 @@ body {
   }
   .slash-shine::after {
     display: none;
+  }
+}
+
+/* ===========================================================================
+   Redesign: the site leads with the games now, so the type scale grows and
+   titles get full-width cinematic blocks instead of cards in a grid.
+   =========================================================================== */
+
+/* Fluid display sizes. clamp() means no breakpoint jumps between phone and
+   desktop, and the hero stays proportional on every width in between. */
+.display-xl {
+  font-family: var(--font-poster);
+  font-weight: 700;
+  /* Teko needs more size per em than a wide face, but at weight 700 it is
+     already heavy: a full 1.3x bump ran the third line out to 80% of the
+     hero, past the copy plate, and the amber measured 1.07:1 there. 7rem
+     keeps it at 67%. Tracking is neutral — a condensed face does not want
+     negative letter-spacing. */
+  font-size: clamp(2.9rem, 9.4vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: 0;
+}
+.display-lg {
+  font-family: var(--font-poster);
+  font-weight: 700;
+  font-size: clamp(2.3rem, 5.8vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+/* Section numbers (01 / 02 / 03) give the page a spine to read down. */
+.section-index {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.22em;
+}
+
+/* A title block: art on one side, words on the other, alternating down the
+   page. Below lg it stacks, art first, so a phone still leads with the image. */
+.title-block {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .title-block {
+    grid-template-columns: 1.55fr 1fr;
+    gap: 4rem;
+  }
+  /* Flipping moves the art to the second column, so the column widths swap
+     with it — otherwise the art would shrink on every other row. */
+  .title-block.is-flipped {
+    grid-template-columns: 1fr 1.55fr;
+  }
+  /* .title-art is now purely a layout hook — Media draws its own frame. */
+  .title-block.is-flipped > .title-art {
+    order: 2;
+  }
+}
+
+/* A hairline rule that fades out — used under section headers. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 22%, transparent), transparent);
+}
+
+/* ===========================================================================
+   Cinematic hero. Every studio site worth copying does the same thing: the
+   first screen IS an image, edge to edge, with the headline sitting on top of
+   it and the nav floating over that. Light page, dark hero — the way Juego
+   and Bethesda do it — so the default light theme still holds below.
+   =========================================================================== */
+
+.hero-cinematic {
+  position: relative;
+  isolation: isolate;
+  min-height: min(90vh, 820px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  color: #fff;
+  background-color: #070b12;
+  background-size: cover;
+  background-position: center;
+}
+
+/* No key art yet: a lit stage rather than a flat panel — two coloured glows
+   and the logo's diagonal, so the slot reads as art direction, not absence. */
+.hero-cinematic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(70% 90% at 18% 15%, color-mix(in srgb, var(--color-blue) 48%, transparent), transparent 62%),
+    radial-gradient(60% 80% at 88% 85%, color-mix(in srgb, var(--color-coral) 34%, transparent), transparent 60%),
+    linear-gradient(160deg, #0d1626 0%, #070b12 55%, #0a0f1a 100%);
+}
+
+/* The slash, scaled up to architecture. */
+.hero-cinematic::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -30%;
+  bottom: -30%;
+  left: 52%;
+  width: 34%;
+  transform: skewX(-18deg);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--color-blue) 26%, transparent) 45%,
+    transparent
+  );
+  filter: blur(2px);
+}
+
+/* With real art in place the glows step back and a scrim keeps text legible. */
+.hero-cinematic.has-art::before {
+  /* A plate that stays strong across the whole copy column rather than
+     falling off radially — the headline runs to ~55% width and the amber
+     line was measuring 2.02:1 past the plate edge. */
+  background:
+    linear-gradient(
+      100deg,
+      rgba(4, 7, 12, 0.88) 0%,
+      rgba(4, 7, 12, 0.84) 40%,
+      rgba(4, 7, 12, 0.72) 64%,
+      rgba(4, 7, 12, 0.26) 84%,
+      rgba(4, 7, 12, 0.36) 100%
+    ),
+    linear-gradient(180deg, rgba(4, 7, 12, 0.25) 0%, transparent 38%, rgba(4, 7, 12, 0.28) 100%);
+}
+.hero-cinematic.has-art::after {
+  display: none;
+}
+
+/* Grain: the one cheap trick that stops a gradient looking like a gradient. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Nav floating over the hero, turning solid once the hero is behind you. */
+.nav-over {
+  background: linear-gradient(180deg, rgba(5, 8, 14, 0.72), transparent);
+  border-color: transparent !important;
+  backdrop-filter: none;
+}
+.nav-over .nav-link { color: rgba(255, 255, 255, 0.82); }
+.nav-over .nav-link:hover { color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cinematic { min-height: 0; }
+}
+
+/* The toggle and the CTA need inverting while the nav floats on dark art. */
+.nav-over .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+}
+.nav-over .theme-toggle:hover {
+  border-color: #fff;
+  color: #fff;
+}
+.nav-over .nav-cta {
+  background: #ffffff;
+  color: #0b1624;
+}
+
+/* Hero text sits on photography that will be swapped out, so it carries its
+   own shadow rather than trusting any one image to stay dark where the words
+   are. Cheap insurance against the next key art being brighter. */
+.hero-cinematic h1,
+.hero-cinematic p {
+  text-shadow: 0 2px 20px rgba(3, 6, 12, 0.6), 0 1px 3px rgba(3, 6, 12, 0.45);
+}
+
+/* ===========================================================================
+   Sliced hero. Two games, one screen, cut on the same diagonal as the slash
+   in the logo. Done with clip-path rather than a baked composite so either
+   game's art can be swapped on its own and the edge stays crisp at any size.
+   =========================================================================== */
+
+.hero-slices {
+  position: absolute;
+  inset: 0;
+  /* Below the scrim. Same z-index as ::before meant the art painted over it,
+     because tree order decides between equal z-indexes and ::before is first. */
+  z-index: -3;
+}
+.hero-slice {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+/* The cut leans right going up, matching the logo's slash. */
+.hero-slice-a {
+  clip-path: polygon(0 0, 63% 0, 49% 100%, 0 100%);
+}
+.hero-slice-b {
+  clip-path: polygon(63% 0, 100% 0, 100% 100%, 49% 100%);
+}
+/* The seam itself, lit in the brand blue — the slash, at page scale. */
+.hero-seam {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(62.6% 0, 63.4% 0, 49.4% 100%, 48.6% 100%);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--color-blue) 22%,
+    #ffffff 50%,
+    var(--color-blue) 78%,
+    transparent
+  );
+  box-shadow: 0 0 40px color-mix(in srgb, var(--color-blue) 60%, transparent);
+}
+
+/* On a phone the diagonal eats too much of each image, so the cut goes
+   shallow and the racing slice takes most of the frame. */
+@media (max-width: 640px) {
+  .hero-slice-a { clip-path: polygon(0 0, 100% 0, 100% 58%, 0 72%); }
+  .hero-slice-b { clip-path: polygon(0 72%, 100% 58%, 100% 100%, 0 100%); }
+  .hero-seam { clip-path: polygon(0 71.4%, 100% 57.4%, 100% 58.6%, 0 72.6%); }
+}
+
+/* On a phone the slices stack, so the copy crosses both images and the
+   desktop plate (anchored bottom-left) no longer sits under it. Swap to a
+   vertical scrim that covers the whole lower half, where the text lives. */
+@media (max-width: 640px) {
+  .hero-cinematic.has-art::before {
+    background: linear-gradient(
+      180deg,
+      rgba(4, 7, 12, 0.2) 0%,
+      rgba(4, 7, 12, 0.4) 26%,
+      rgba(4, 7, 12, 0.7) 48%,
+      rgba(4, 7, 12, 0.84) 100%
+    );
   }
 }

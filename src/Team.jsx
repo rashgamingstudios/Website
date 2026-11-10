@@ -1,6 +1,6 @@
 import { team } from "./data/team.js";
 import { STUDIO } from "./data.js";
-import { Media, Reveal, Eyebrow } from "./ui.jsx";
+import { Media, Reveal } from "./ui.jsx";
 
 /*
  * "Who's behind this" — warm, human, data-driven.
@@ -21,7 +21,8 @@ function TeamCard({ person, delay }) {
       className="flex w-full max-w-xs flex-col rounded-3xl border-2 border-ink/8 bg-surface p-4 transition-transform duration-300 hover:-translate-y-1 sm:w-72"
     >
       <Media
-        label={`Photo — ${person.name} (drop file at ${person.photo_url})`}
+        label={person.name}
+        src={person.photo_url}
         ratio="1/1"
         color="var(--color-blue)"
       />
@@ -75,17 +76,21 @@ function WorkWithUs() {
 
 export default function Team() {
   return (
-    <section id="team" aria-labelledby="team-heading" className="scroll-mt-20 border-t border-ink/8 py-16 sm:py-24">
+    <section id="team" aria-labelledby="team-heading" className="scroll-mt-20 py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
-        <Reveal className="text-center">
-          <Eyebrow>The humans</Eyebrow>
-          <h2 id="team-heading" className="mt-4 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
+        <Reveal className="max-w-3xl">
+          <p className="flex items-center gap-3 font-mono text-xs font-bold uppercase">
+            <span className="section-index text-grape">05</span>
+            <span className="text-ink-soft">The humans</span>
+          </p>
+          <h2 id="team-heading" className="display-lg mt-5 font-display font-extrabold">
             Who's behind this
           </h2>
-          <p className="mx-auto mt-3 max-w-xl leading-relaxed text-ink-soft">
+          <p className="mt-4 text-lg leading-relaxed text-ink-soft">
             No account managers, no handoffs. The person who answers your email is the person who builds your game.
           </p>
         </Reveal>
+        <div className="rule-fade mt-10" />
         <div className="mt-10 flex flex-wrap justify-center gap-6">
           {team.map((person, i) => (
             <TeamCard key={person.id} person={person} delay={i * 90} />

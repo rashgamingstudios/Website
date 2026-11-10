@@ -18,9 +18,9 @@ import Pricing from "./Pricing.jsx";
  */
 
 const NAV = [
+  { label: "Games", to: "/#games" },
   { label: "Cartbo", to: "/#cartbo" },
   { label: "What we build", to: "/#services" },
-  { label: "Our games", to: "/#games" },
   { label: "Process", to: "/#process" },
   { label: "Pricing", to: "/pricing" },
 ];
@@ -75,13 +75,31 @@ function ScrollManager() {
 
 function Header() {
   const [open, setOpen] = useState(false);
+  const [atTop, setAtTop] = useState(true);
+  const { pathname } = useLocation();
   const close = () => setOpen(false);
 
+  // The home hero is a dark full-bleed image, so the nav floats over it and
+  // only takes on a background once you've scrolled past. Other pages start
+  // with ordinary content, so the nav is solid there from the first pixel.
+  const overHero = pathname === "/" && atTop && !open;
+
+  useEffect(() => {
+    const onScroll = () => setAtTop(window.scrollY < 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-ink/8 bg-base/85 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        overHero ? "nav-over" : "border-ink/8 bg-base/85 backdrop-blur-md"
+      }`}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
         <Link to="/" aria-label="Rash Game Studios — home" className="rounded-md" onClick={close}>
-          <Wordmark />
+          <Wordmark dark={overHero} />
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-6 lg:flex">
@@ -89,14 +107,14 @@ function Header() {
             <Link
               key={item.to}
               to={item.to}
-              className="text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
+              className="nav-link text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
             >
               {item.label}
             </Link>
           ))}
           <a
             href={cartbo.url}
-            className="text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
+            className="nav-link text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
             aria-label="Play — Cartbo, our platform for indie games"
           >
             Play ↗
@@ -104,7 +122,7 @@ function Header() {
           <ThemeToggle />
           <a
             href={`mailto:${STUDIO.email}`}
-            className="rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-on-ink transition-transform hover:-translate-y-0.5"
+            className="nav-cta rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-on-ink transition-transform hover:-translate-y-0.5"
           >
             Start a project
           </a>

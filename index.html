@@ -8,14 +8,47 @@
       content="Rash Game Studios builds web games, CrazyGames releases with full SDK and launch-approval support, Roblox experiences and one-week prototypes — and makes Cartbo, a social platform for indie game developers."
     />
     <title>Rash Game Studios — Web games, CrazyGames, Roblox &amp; prototypes</title>
+    <link rel="canonical" href="https://rashgamestudios.com/" />
+
+    <!-- Favicon. One 512px PNG covers every modern browser; the 180px copy is
+         what iOS uses for a home-screen bookmark. -->
+    <link rel="icon" type="image/png" sizes="any" href="/icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Link preview card (WhatsApp, Discord, X, LinkedIn, iMessage).
+         og:image must be absolute — relative paths are ignored by every scraper. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rash Game Studios" />
+    <meta property="og:url" content="https://rashgamestudios.com/" />
+    <meta property="og:title" content="Rash Game Studios — Web games, CrazyGames, Roblox &amp; prototypes" />
+    <meta
+      property="og:description"
+      content="We build web games, CrazyGames releases with full SDK and launch-approval support, Roblox experiences and one-week prototypes — and we make Cartbo, a social platform for indie game developers."
+    />
+    <meta property="og:image" content="https://rashgamestudios.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Rash Game Studios" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rash Game Studios — Web games, CrazyGames, Roblox &amp; prototypes" />
+    <meta
+      name="twitter:description"
+      content="We build web games, CrazyGames releases with full SDK and launch-approval support, Roblox experiences and one-week prototypes — and we make Cartbo."
+    />
+    <meta name="twitter:image" content="https://rashgamestudios.com/og.png" />
+
+    <meta name="theme-color" content="#0b1624" />
+
     <script>
-      // Set theme before first paint so there's no flash. Saved choice wins, then OS preference.
-      // Same key and attribute as the arcade site, so the toggle behaves identically on both.
+      // Set theme before first paint so there's no flash. Light is the default;
+      // a visitor who flips the toggle gets their choice remembered.
       ;(function () {
         try {
+          // Light is the default. Only a choice the visitor made here is
+          // honoured; the OS preference no longer decides.
           var t = localStorage.getItem('rash-theme')
-          if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-          document.documentElement.dataset.theme = t
+          document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light'
         } catch (e) {}
       })()
     </script>

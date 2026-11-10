@@ -11,11 +11,14 @@
 export const BLUE = "var(--color-blue)";
 
 export const STUDIO = {
-  // rashgamesstudios.com (two 's') does not resolve — the old site's contact
-  // address was on a domain that was never registered. This matches the CNAME,
-  // which is the domain that actually serves the site.
-  email: "hello@rashgamestudios.com",
-  clients: "10+",
+  // The studio mailbox, as given by the owner. Not hello@rashgamestudios.com —
+  // that domain was inferred earlier and never actually had a mailbox on it.
+  email: "rashgamingstudios@gmail.com",
+  // Wide banner under the hero. Drop a file at public/hero.jpg and set this.
+  // The hero is sliced diagonally between the two games, echoing the slash
+  // in the logo. Order is left slice, right slice.
+  // One path fills the hero. Add a second and it splits on the diagonal.
+  heroSlices: ["/hero-racing.jpg"],
 };
 
 /* --------------------------------- Cartbo --------------------------------- */
@@ -69,7 +72,7 @@ export const cartbo = {
 /* -------------------------------- Services -------------------------------- */
 /* What clients actually hire us for. Order = how often it's asked for. */
 
-export const services = [
+export const allServices = [
   {
     id: "web-games",
     title: "Web games",
@@ -90,11 +93,11 @@ export const services = [
     color: "var(--color-coral)",
     tagline: "We stay on it until it's approved.",
     desc:
-      "Full CrazyGames SDK integration — rewarded and midgame ads, loading and gameplay events, happytime, invite links, cloud saves. Then we run the submission with you and keep fixing until the game clears basic launch approval.",
+      "Full CrazyGames SDK integration — rewarded and midgame ads, loading and gameplay events, happytime, invite links, cloud saves. Then we run the submission with you and fix whatever review comes back with, up to three rounds.",
     bullets: [
       "SDK wired correctly, not bolted on at the end",
       "QA pass against the CrazyGames review checklist",
-      "Resubmission fixes included until basic launch approval",
+      "Up to 3 resubmission rounds included",
     ],
     from: "$280",
   },
@@ -110,7 +113,7 @@ export const services = [
       "Safe DataStore saves with session locking",
       "Monetization and analytics wired in at build time",
     ],
-    from: "$250",
+    from: "$400",
   },
   {
     id: "prototypes",
@@ -128,6 +131,9 @@ export const services = [
   },
   {
     id: "ai",
+    // Hidden until the replacement copy is written (website brief, item 7).
+    // Flip this to false and the card returns to the grid and the pricing page.
+    hidden: true,
     title: "Game dev with AI",
     color: "var(--color-grape)",
     tagline: "In the pipeline, and in the game.",
@@ -138,24 +144,59 @@ export const services = [
       "LLM-driven dialogue and NPC behaviour",
       "Procedural content and adaptive difficulty systems",
     ],
-    from: "$400",
+    from: "$250",
   },
 ];
+
+export const services = allServices.filter((s) => !s.hidden);
 
 /* ------------------------------- Studio games ------------------------------ */
 /* Our own titles — proof we ship, not a catalogue. */
 
-export const ownGames = [
+/*
+ * The slate. These are the studio's own titles and they carry the site now —
+ * with no client work to show, this section is the proof that we ship.
+ *
+ * Two of them are deliberately unnamed. That reads as a tease rather than a
+ * gap, so an unannounced title is a feature of the layout, not a hole in it:
+ * `title: null` renders the `placeholder` instead and shows a "name soon" note.
+ *
+ * To finish a title: set `title`, drop key art at `art`, and delete the
+ * `placeholder`. Nothing else needs touching.
+ */
+export const allTitles = [
   {
-    id: "roast-racers",
+    id: "racing",
     title: "Roast Racers",
     color: "var(--color-coral)",
+    // Footage is semi-realistic: wet asphalt, real cars, autumn highways —
+    // not the cartoon party racer the old blurb implied. Copy follows the
+    // footage, and keeps the roast, which is a real planned feature.
     tagline: "Out-drive your friends. Never let them forget it.",
     desc:
-      "A multiplayer party racer: short races, ridiculous power-ups, and an automatic roast for whoever finishes last. Built in Unity with Photon Fusion — the project where we learned how to make real-time multiplayer behave.",
+      "A multiplayer racer built in Unity with Photon Fusion — real handling, weather that turns on you, and a roast waiting for whoever finishes last.",
     tech: ["Unity", "C#", "Photon Fusion"],
-    status: "In development",
-    link: "[insert store link]",
+    platforms: ["Play Store", "Web"],
+    art: "/games/racing/keyart.jpg",
+    trailer: "/games/racing/trailer.mp4",
+    shots: ["/games/racing/shot-1.jpg", "/games/racing/shot-2.jpg", "/games/racing/shot-3.jpg"],
+    status: "In production",
+    link: null,
+  },
+  {
+    id: "hunting",
+    title: "Wildkeeper",
+    placeholder: null, // named now
+    color: "var(--color-mint)",
+    tagline: "Hunt. Catch. Build your zoo.",
+    desc: "Track animals across forest, swamp, plains and snowfields, catch them with bait, nets and a steady hand — then stock the zoo they end up in.",
+    tech: ["Unity", "C#"],
+    platforms: ["Play Store", "Web"],
+    art: "/games/hunting/keyart.jpg",
+    trailer: "/games/hunting/trailer.mp4",
+    shots: ["/games/hunting/shot-1.jpg", "/games/hunting/shot-2.jpg", "/games/hunting/shot-3.jpg"],
+    status: "In production",
+    link: null,
   },
   {
     id: "hold-on-happy",
@@ -165,27 +206,24 @@ export const ownGames = [
     desc:
       "Our slowest, most personal project — a third-person narrative adventure about the kind of friendship that doesn't need words. It's the reason the studio exists, and it takes exactly as long as it takes.",
     tech: ["Unity", "C#", "Narrative"],
-    status: "In development",
-    link: "[insert wishlist link]",
+    platforms: ["PC"],
+    art: null, // "/games/hold-on-happy.jpg"
+    shots: [null, null, null],
+    status: "The long one",
+    link: null,
   },
 ];
+
+export const titles = allTitles.filter((t) => !t.hidden);
 
 /* --------------------------------- Proof ---------------------------------- */
 
 export const proof = [
-  { k: "Satisfied clients", v: "10+", c: "var(--color-blue)" },
   { k: "Prototype turnaround", v: "1 day – 1 week", c: "var(--color-sun)" },
-  { k: "Platforms shipped to", v: "Web · CrazyGames · Roblox", c: "var(--color-coral)" },
-  { k: "Launch support", v: "Until approval", c: "var(--color-mint)" },
+  { k: "Platforms we build for", v: "Web · CrazyGames · Roblox", c: "var(--color-blue)" },
+  { k: "Launch support", v: "Through submission", c: "var(--color-mint)" },
 ];
 
-/* Swap these for real quotes as you collect them — empty quotes are skipped. */
-export const testimonials = [
-  // Add real quotes here and the section appears on its own. An entry with an
-  // empty quote is skipped, and with none of them filled in the whole section
-  // is not rendered at all.
-  // { quote: "", name: "", role: "" },
-];
 
 /* ------------------------------- Process ---------------------------------- */
 /* Short version lives on the home page; the full version is on /pricing. */
@@ -244,7 +282,7 @@ export const process = [
     title: "Launch & approval support",
     short: "We stay on it until the game is live.",
     detail:
-      "For CrazyGames we handle submission with you and fix whatever review comes back with, as many rounds as it takes, until the game clears basic launch approval. That support is in the price — not an add-on.",
+      "For CrazyGames we handle submission with you and fix whatever review comes back with — up to three rounds, included in the price rather than billed as an add-on. It is rare to need more than one.",
     color: "var(--color-blue)",
   },
   {
@@ -261,31 +299,13 @@ export const process = [
 
 export const channels = [
   {
-    name: "Discord",
-    color: "#5865f2",
-    blurb: "Dev talk, playtests, and the quickest way to reach us.",
-    cta: "Join the Discord",
-    link: "[insert Discord invite]",
-  },
-  {
     name: "YouTube",
     color: "#ff0033",
     blurb: "Devlogs, trailers, and the occasional dog cameo.",
     cta: "Watch on YouTube",
     link: "https://youtube.com/@gamedevteluguoffl",
   },
-  {
-    name: "X / Twitter",
-    color: "#101828",
-    blurb: "Build-in-public updates, sometimes mid-crunch.",
-    cta: "Follow on X",
-    link: "[insert X profile]",
-  },
-  {
-    name: "Instagram",
-    color: "#e1306c",
-    blurb: "Screenshots, key art, and behind-the-scenes.",
-    cta: "Follow on Instagram",
-    link: "[insert Instagram profile]",
-  },
+  // Discord, X and Instagram were removed rather than left pointing nowhere.
+  // Add one back with a real URL and both the contact grid and the footer
+  // pick it up automatically.
 ];

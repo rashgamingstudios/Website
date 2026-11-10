@@ -1,42 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 
 /*
- * Logo — a code recreation of the Rash mark (bold R cut by the blue slash).
- * Swap the <LogoMark> SVG for the real logo file (e.g. /logo.svg in /public)
- * when you drop assets in: <img src="/logo.svg" alt="Rash Game Studios" />.
- * `gap` should match the background the logo sits on, so the slash reads as a cut.
+ * Logo — the real studio mark, as a rounded tile.
+ *
+ * The artwork is white-and-blue on its own deep navy, so it can't sit directly
+ * on the light theme's background. Keeping that navy as a rounded tile solves
+ * it: one asset reads correctly in both themes and needs no light/dark variant.
+ * The wordmark beside it stays live text, so it themes with everything else.
  */
-export function LogoMark({ className = "h-9 w-9", gap = "var(--color-base)", ink = "var(--color-ink)" }) {
+export function LogoMark({ className = "h-9 w-9" }) {
   return (
-    <svg viewBox="0 0 48 48" className={className} aria-hidden="true">
-      <text
-        x="24"
-        y="39"
-        textAnchor="middle"
-        fontFamily="Sora, sans-serif"
-        fontWeight="800"
-        fontSize="44"
-        fill={ink}
-      >
-        R
-      </text>
-      <g transform="rotate(-30 24 26)">
-        <rect x="-10" y="21.5" width="68" height="9" fill={gap} />
-        <rect x="-10" y="23.5" width="68" height="5" fill="#1290f0" />
-        <polygon points="58,23.5 66,26 58,28.5" fill="#1290f0" />
-      </g>
-    </svg>
+    <img
+      src="/icon.png"
+      alt=""
+      aria-hidden="true"
+      width="512"
+      height="512"
+      className={`${className} shrink-0 rounded-[22%] object-cover`}
+    />
   );
 }
 
-export function Wordmark({ dark = false, gap }) {
+export function Wordmark({ dark = false }) {
   return (
     <span className="flex items-center gap-2.5">
-      <LogoMark
-        className="h-9 w-9 shrink-0"
-        gap={gap ?? (dark ? "var(--color-deep)" : "var(--color-base)")}
-        ink={dark ? "#ffffff" : "var(--color-ink)"}
-      />
+      <LogoMark className="h-9 w-9" />
       <span className="flex flex-col leading-none">
         <span
           className={`font-display text-lg font-extrabold tracking-tight ${
@@ -52,28 +40,127 @@ export function Wordmark({ dark = false, gap }) {
 }
 
 /*
- * Media — clearly-labeled placeholder block for game art / video.
- * ratio: CSS aspect-ratio string. video: shows a play chip so you know
- * a video file goes here, not an image.
+ * Media — real artwork when there is a `src`, a labelled placeholder when there
+ * isn't. Sections can therefore ship before their assets exist and light up on
+ * their own once a file is dropped in.
+ *
+ * ratio:  CSS aspect-ratio string, held whether or not the asset loads, so the
+ *         page never reflows when an image arrives late.
+ * video:  with a src, renders poster-then-click-to-play (preload="none", so a
+ *         heavy clip costs nothing until someone asks for it). Without a src,
+ *         shows a play chip to mark the slot as a video.
+ * A src that 404s falls back to the placeholder rather than a broken image.
  */
-export function Media({ label, ratio = "16/9", color = "var(--color-blue)", video = false, className = "" }) {
+export function Media({
+  label,
+  ratio = "16/9",
+  color = "var(--color-blue)",
+  video = false,
+  src,
+  poster,
+  hint,
+  fit = "cover",
+  className = "",
+}) {
+  const [failed, setFailed] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const hasMedia = Boolean(src) && !failed;
+
   // color-mix instead of hex+alpha so `color` can be a CSS variable that
   // remaps in dark mode; percentages match the old 66/1f/0a/14 alpha values.
   const mix = (pct) => `color-mix(in srgb, ${color} ${pct}%, transparent)`;
+
+  if (hasMedia && video) {
+    return (
+      <div
+        className={`relative overflow-hidden rounded-2xl ${className}`}
+        style={{ aspectRatio: ratio, background: mix(10) }}
+      >
+        {playing ? (
+          <video
+            src={src}
+            poster={poster}
+            controls
+            autoPlay
+            playsInline
+            className="h-full w-full"
+            style={{ objectFit: fit }}
+            onError={() => setFailed(true)}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPlaying(true)}
+            aria-label={`Play — ${label}`}
+            className="group absolute inset-0 h-full w-full cursor-pointer"
+          >
+            {poster && (
+              <img
+                src={poster}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                className="h-full w-full"
+                style={{ objectFit: fit }}
+                onError={() => setFailed(true)}
+              />
+            )}
+            <span className="absolute inset-0 flex items-center justify-center bg-black/15 transition-colors group-hover:bg-black/25">
+              <span
+                className="flex h-16 w-16 items-center justify-center rounded-full shadow-xl transition-transform duration-300 group-hover:scale-110"
+                style={{ background: color }}
+              >
+                <svg viewBox="0 0 24 24" className="ml-1 h-7 w-7" style={{ fill: "var(--color-on-accent)" }}>
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  if (hasMedia) {
+    return (
+      <img
+        src={src}
+        alt={label}
+        loading="lazy"
+        className={`w-full rounded-2xl ${className}`}
+        style={{ aspectRatio: ratio, objectFit: fit }}
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+
+  /* Placeholder. Styled as a picture rather than an empty box, so the layout
+     reads picture-led before the real art exists — and it names the file to
+     drop in, so the page doubles as the shopping list. */
   return (
     <div
       role="img"
-      aria-label={`Placeholder — ${label}`}
-      className={`relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed ${className}`}
+      aria-label={`Image placeholder — ${label}`}
+      className={`relative flex flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border ${className}`}
       style={{
         aspectRatio: ratio,
-        borderColor: mix(40),
-        background: `linear-gradient(135deg, ${mix(12)} 0%, ${mix(4)} 55%, ${mix(8)} 100%)`,
+        borderColor: mix(35),
+        background: `linear-gradient(145deg, ${mix(16)} 0%, ${mix(5)} 55%, ${mix(11)} 100%)`,
       }}
     >
-      {video && (
+      {/* Faint grid so an empty slot still has surface texture. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `linear-gradient(${mix(10)} 1px, transparent 1px), linear-gradient(90deg, ${mix(10)} 1px, transparent 1px)`,
+          backgroundSize: "34px 34px",
+        }}
+      />
+
+      {video ? (
         <span
-          className="flex h-14 w-14 items-center justify-center rounded-full"
+          className="relative flex h-14 w-14 items-center justify-center rounded-full"
           style={{ background: color }}
           aria-hidden="true"
         >
@@ -81,13 +168,34 @@ export function Media({ label, ratio = "16/9", color = "var(--color-blue)", vide
             <path d="M8 5v14l11-7z" />
           </svg>
         </span>
+      ) : (
+        /* Mountain-and-sun glyph: the universal "a picture goes here". */
+        <svg
+          viewBox="0 0 48 36"
+          className="relative h-9 w-9 sm:h-11 sm:w-11"
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="2" y="3" width="44" height="30" rx="4" opacity="0.55" />
+          <circle cx="15" cy="13" r="3.5" />
+          <path d="M6 28l10.5-11 7.5 8 6-5.5L42 28" />
+        </svg>
       )}
-      <span
-        className="absolute bottom-2.5 left-3 right-3 truncate font-mono text-[11px] leading-snug"
-        style={{ color }}
-      >
-        {video ? "▶ " : "⬚ "}
-        {label}
+
+      <span className="relative px-4 text-center">
+        <span
+          className="block font-mono text-[11px] font-bold uppercase tracking-[0.18em]"
+          style={{ color }}
+        >
+          {label}
+        </span>
+        {hint && (
+          <span className="mt-1 block font-mono text-[10px] leading-snug text-ink-soft">{hint}</span>
+        )}
       </span>
     </div>
   );
@@ -148,7 +256,7 @@ export function ThemeToggle() {
       aria-pressed={dark}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       title={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-ink/20 text-ink/70 transition-colors hover:border-ink hover:text-ink"
+      className="theme-toggle flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-ink/20 text-ink/70 transition-colors hover:border-ink hover:text-ink"
     >
       {dark ? (
         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">

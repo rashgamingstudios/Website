@@ -7,7 +7,7 @@ export const team = [
     id: "sai-ram",
     name: "Sai Ram",
     role: "Founder",
-    bio: "Unity and C# developer. I build the games clients hire us for, and I built Cartbo because the pre-launch months are the hardest part of making a game and nothing was built for them.",
+    bio: "Unity and C# developer. I lead Roast Racers and Wildkeeper, take on client builds, and started Cartbo because the pre-launch months are the hardest part of making a game and nothing was built for them.",
     photo_url: "/team/sai-ram.png",
     links: { twitter: "", linkedin: "", github: "" },
   },

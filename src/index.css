@@ -468,3 +468,25 @@ body {
     );
   }
 }
+
+/* ---- "What we build": a dark cinematic band that picks up the hero's palette.
+   Stays dark in both themes, like the hero, with one amber accent. ---- */
+.services-band {
+  position: relative;
+  background:
+    radial-gradient(60% 50% at 85% 0%, rgba(255, 181, 52, 0.12), transparent 70%),
+    radial-gradient(50% 40% at 0% 100%, rgba(18, 144, 240, 0.1), transparent 70%),
+    #0a0f18;
+}
+.service-card {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+.service-card:hover,
+.service-card:focus-visible {
+  border-color: rgba(255, 181, 52, 0.55);
+  background: linear-gradient(180deg, rgba(255, 181, 52, 0.09), rgba(255, 255, 255, 0.02));
+  transform: translateY(-3px);
+}

@@ -338,68 +338,77 @@ function Cartbo() {
 
 function Services() {
   return (
-    <section id="services" aria-labelledby="services-heading" className="scroll-mt-20 py-20 sm:py-28">
+    <section
+      id="services"
+      aria-labelledby="services-heading"
+      className="services-band scroll-mt-20 py-20 text-white sm:py-28"
+    >
       <div className="mx-auto max-w-6xl px-5">
-        <SectionHead index="03" label="What we build for clients" title="We also build yours.">
+        <SectionHead
+          index="03"
+          label="What we build for clients"
+          title="We also build yours."
+          color="var(--color-sun)"
+          light
+        >
           The same pipeline, pointed at your game instead of ours. Browser games and
           the platforms they live on — which is why we know those review checklists
           by heart.
         </SectionHead>
 
-        <div className="rule-fade mt-10" />
+        {/* One accent, the hero's amber, instead of a colour per service. The
+            numbers carry the rhythm the colours used to. */}
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2">
+          {services.map((service, i) => (
+            <Reveal as="li" key={service.id} delay={i * 70}>
+              <Link to={`/pricing#${service.id}`} className="service-card group block h-full p-7 sm:p-8">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="font-poster text-5xl leading-none text-white/15 transition-colors group-hover:text-sun">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-right">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                      from
+                    </span>
+                    <span className="font-poster text-4xl leading-none text-sun">{service.from}</span>
+                  </span>
+                </div>
 
-        <ul className="mt-10 grid gap-px overflow-hidden rounded-3xl border border-ink/10 bg-ink/10 sm:grid-cols-2">
-          {services.map((service) => (
-            <Reveal as="li" key={service.id} className="bg-base p-7">
-              <p className="flex items-baseline justify-between gap-3">
-                <span className="font-display text-2xl font-bold leading-tight">{service.title}</span>
-                <span className="shrink-0 font-mono text-xs font-bold" style={{ color: service.color }}>
-                  from {service.from}
+                <h3 className="mt-6 font-display text-2xl font-bold">{service.title}</h3>
+                <p className="mt-1.5 font-display text-base font-semibold text-white/80">{service.tagline}</p>
+                <p className="mt-3 text-sm leading-relaxed text-white/60">{service.desc}</p>
+
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-sun">
+                  See what it costs
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
                 </span>
-              </p>
-              <p className="mt-2 font-display text-base font-semibold" style={{ color: service.color }}>
-                {service.tagline}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-soft">{service.desc}</p>
-              <Link
-                to={`/pricing#${service.id}`}
-                className="mt-4 inline-block text-sm font-bold"
-                style={{ color: service.color }}
-              >
-                See what it costs →
               </Link>
             </Reveal>
           ))}
         </ul>
 
-        {/* The facts that belong to the service offer, not the studio's games. */}
-        <Reveal delay={120} className="mt-6 grid gap-3 sm:grid-cols-3">
+        {/* Facts as a single strip divided by hairlines, not three bordered boxes. */}
+        <Reveal delay={120} className="mt-4 grid divide-y divide-white/10 rounded-2xl border border-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {proof.map((fact) => (
-            <div
-              key={fact.k}
-              className="rounded-2xl border border-ink/10 bg-surface p-5"
-              style={{ borderLeftColor: fact.c, borderLeftWidth: "5px" }}
-            >
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-soft">
-                {fact.k}
-              </p>
-              <p className="mt-1 font-display text-lg font-bold leading-tight">{fact.v}</p>
+            <div key={fact.k} className="px-7 py-6">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">{fact.k}</p>
+              <p className="mt-2 font-poster text-3xl leading-none">{fact.v}</p>
             </div>
           ))}
         </Reveal>
 
-        <Reveal delay={160} className="mt-6 flex flex-col items-start justify-between gap-4 rounded-3xl bg-blue px-7 py-7 sm:flex-row sm:items-center">
-          <p className="font-display text-xl font-bold text-on-accent sm:text-2xl">
+        <Reveal delay={160} className="mt-4 flex flex-col items-start justify-between gap-5 rounded-2xl border border-sun/30 bg-sun/[0.07] px-7 py-7 sm:flex-row sm:items-center">
+          <p className="font-display text-xl font-bold sm:text-2xl">
             Every tier and every number, in the open.
-            <span className="mt-1 block font-body text-sm font-semibold opacity-80">
+            <span className="mt-1 block font-body text-sm font-medium text-white/60">
               Most studios make you book a call to find out if you can afford them.
             </span>
           </p>
           <Link
             to="/pricing"
-            className="shrink-0 rounded-full bg-surface px-6 py-3 font-bold text-blue transition-transform hover:-translate-y-0.5"
+            className="shrink-0 rounded-full bg-sun px-7 py-3.5 font-bold text-[#0a0f18] transition-transform hover:-translate-y-0.5"
           >
-            Open pricing
+            Open pricing →
           </Link>
         </Reveal>
       </div>

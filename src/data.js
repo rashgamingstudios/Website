@@ -85,7 +85,7 @@ export const allServices = [
       "Build-size and load-time budget agreed up front",
       "Portable to any web portal, not locked to one",
     ],
-    from: "$700",
+    from: "$350",
   },
   {
     id: "crazygames",
@@ -99,7 +99,7 @@ export const allServices = [
       "QA pass against the CrazyGames review checklist",
       "Up to 3 resubmission rounds included",
     ],
-    from: "$280",
+    from: "$149",
   },
   {
     id: "roblox",
@@ -113,7 +113,7 @@ export const allServices = [
       "Safe DataStore saves with session locking",
       "Monetization and analytics wired in at build time",
     ],
-    from: "$400",
+    from: "$399",
   },
   {
     id: "prototypes",
@@ -127,7 +127,7 @@ export const allServices = [
       "Core-loop prototype in two to four days",
       "Vertical slice in a week",
     ],
-    from: "$150",
+    from: "$99",
   },
   {
     id: "ai",

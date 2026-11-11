@@ -18,7 +18,7 @@ export const allTiers = [
     rows: [
       {
         name: "One-day spike",
-        price: "$150 – $280",
+        price: "$99 – $185",
         time: "1 day",
         includes: [
           "One mechanic, playable in the browser",
@@ -28,7 +28,7 @@ export const allTiers = [
       },
       {
         name: "Core-loop prototype",
-        price: "$300 – $550",
+        price: "$199 – $365",
         time: "2 – 4 days",
         includes: [
           "Full core loop, start to fail state",
@@ -38,7 +38,7 @@ export const allTiers = [
       },
       {
         name: "Vertical slice",
-        price: "$650 – $1,100",
+        price: "$429 – $729",
         time: "1 week",
         includes: [
           "One polished level at shipping quality",
@@ -57,7 +57,7 @@ export const allTiers = [
     rows: [
       {
         name: "Single-mechanic / hyper-casual",
-        price: "$700 – $1,600",
+        price: "$350 – $800",
         time: "2 – 3 weeks",
         includes: [
           "One strong mechanic, endless or level-based",
@@ -67,7 +67,7 @@ export const allTiers = [
       },
       {
         name: "Mid-size web game",
-        price: "$1,800 – $4,200",
+        price: "$900 – $2,100",
         time: "4 – 8 weeks",
         includes: [
           "Multiple mechanics, 10 – 25 levels or a run-based loop",
@@ -77,7 +77,7 @@ export const allTiers = [
       },
       {
         name: "Full web game",
-        price: "$4,500 – $9,500",
+        price: "$2,250 – $4,750",
         time: "8 – 16 weeks",
         includes: [
           "Large content set, meta-progression, economy",
@@ -96,7 +96,7 @@ export const allTiers = [
     rows: [
       {
         name: "SDK integration on your existing game",
-        price: "$280 – $550",
+        price: "$149 – $299",
         time: "3 – 5 days",
         includes: [
           "Rewarded + midgame ads, loading and gameplay events, happytime",
@@ -106,7 +106,7 @@ export const allTiers = [
       },
       {
         name: "Web game built for CrazyGames",
-        price: "$1,200 – $3,500",
+        price: "$649 – $1,850",
         time: "3 – 6 weeks",
         includes: [
           "The game, built to the platform's performance budget",
@@ -116,7 +116,7 @@ export const allTiers = [
       },
       {
         name: "Full release package",
-        price: "$3,800 – $7,500",
+        price: "$1,999 – $3,999",
         time: "6 – 12 weeks",
         includes: [
           "Larger game, full art and audio production",
@@ -135,7 +135,7 @@ export const allTiers = [
     rows: [
       {
         name: "Experience prototype",
-        price: "$400 – $900",
+        price: "$399 – $900",
         time: "3 – 7 days",
         includes: [
           "Core loop playable in Studio and live",

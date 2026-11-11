@@ -24,8 +24,8 @@ function spaFallback() {
       // GitHub Pages answers /pricing with 404.html *and a 404 status*, so
       // Google would never index it. A real pricing/index.html returns 200.
       const html = readFileSync(out("index.html"), "utf8")
-        .replaceAll('href="https://rashgamestudios.com/"', 'href="https://rashgamestudios.com/pricing"')
-        .replaceAll('content="https://rashgamestudios.com/"', 'content="https://rashgamestudios.com/pricing"')
+        .replaceAll('href="https://rashgamestudios.com/"', 'href="https://rashgamestudios.com/pricing/"')
+        .replaceAll('content="https://rashgamestudios.com/"', 'content="https://rashgamestudios.com/pricing/"')
         .replace(/<title>[^<]*<\/title>/, "<title>Pricing — Rash Game Studios</title>");
       mkdirSync(out("pricing"), { recursive: true });
       writeFileSync(out("pricing/index.html"), html);

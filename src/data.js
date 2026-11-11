@@ -200,6 +200,8 @@ export const allTitles = [
   },
   {
     id: "hold-on-happy",
+    // Hidden until it has art. Delete this line to bring the card back.
+    hidden: true,
     title: "Hold On Happy",
     color: "var(--color-sun)",
     tagline: "A man. His golden labrador. One long walk home.",

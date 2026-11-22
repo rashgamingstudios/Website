@@ -68,7 +68,7 @@ function Hero() {
           className="rise font-mono text-xs font-bold uppercase tracking-[0.24em] text-white/60"
           style={{ animationDelay: "0ms" }}
         >
-          <span className="text-blue" aria-hidden="true">/</span> Independent game studio · India
+          <span className="text-blue" aria-hidden="true">/</span> Independent game studio · Kakinada, India
         </p>
 
         <h1 className="rise mt-6 max-w-5xl" style={{ animationDelay: "120ms" }}>
@@ -495,6 +495,9 @@ function Contact() {
               </Link>
             </div>
             <p className="mt-5 font-mono text-sm text-white/55">{STUDIO.email}</p>
+            <p className="mt-2 text-sm text-white/55">
+              {STUDIO.founder}, founder · {STUDIO.location}
+            </p>
           </Reveal>
 
           <Reveal delay={120}>

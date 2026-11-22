@@ -14,6 +14,9 @@ export const STUDIO = {
   // The studio mailbox, as given by the owner. Not hello@rashgamestudios.com —
   // that domain was inferred earlier and never actually had a mailbox on it.
   email: "rashgamingstudios@gmail.com",
+  founder: "Sai Ram",
+  city: "Kakinada",
+  location: "Kakinada, Andhra Pradesh, India",
   // Wide banner under the hero. Drop a file at public/hero.jpg and set this.
   // The hero is sliced diagonally between the two games, echoing the slash
   // in the logo. Order is left slice, right slice.

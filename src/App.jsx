@@ -183,8 +183,8 @@ function Footer() {
           <div>
             <Wordmark dark />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/50">
-              We build web games, CrazyGames releases, Roblox experiences and fast
-              prototypes — and we make Cartbo.
+              Independent game studio making Roast Racers, Wildkeeper and Cartbo.
+              Founded by {STUDIO.founder} in {STUDIO.location}.
             </p>
           </div>
           <nav aria-label="Footer" className="grid grid-cols-2 gap-x-12 gap-y-2.5 sm:grid-cols-3">
